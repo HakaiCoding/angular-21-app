@@ -1,0 +1,69 @@
+:host {
+  display: block;
+}
+
+.demo-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.demo-page {
+  padding: 24px;
+}
+
+.demo-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+mat-card {
+  height: 100%;
+}
+
+mat-card-content {
+  display: grid;
+  gap: 16px;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.form-content {
+  align-items: start;
+}
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.feedback-content {
+  gap: 14px;
+}
+
+.spinner-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.tab-copy {
+  margin: 16px 0;
+}
+
+@media (max-width: 600px) {
+  .demo-page {
+    padding: 16px;
+  }
+}
