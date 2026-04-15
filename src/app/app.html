@@ -1,11 +1,19 @@
-<h1>Hello, angular-21-app</h1>
+<ng-container *transloco="let t">
+  <h1>{{ t('app.title') }}</h1>
 
-<mat-toolbar class="demo-toolbar">
-  <span>Angular Material 21 Theme Playground</span>
-  <span class="spacer"></span>
-  <button mat-button>Docs</button>
-  <button mat-flat-button>Primary Action</button>
-</mat-toolbar>
+  <div class="language-switcher">
+    @for (lang of languages; track lang) {
+      <button mat-stroked-button type="button" (click)="setLang(lang)">{{ lang }}</button>
+    }
+  </div>
+
+  <mat-toolbar class="demo-toolbar">
+    <span>Angular Material 21 Theme Playground</span>
+    <span class="spacer"></span>
+    <button mat-button>{{ t('app.docs') }}</button>
+    <button mat-flat-button>{{ t('app.primaryAction') }}</button>
+  </mat-toolbar>
+</ng-container>
 
 <main class="demo-page">
   <section class="demo-grid">

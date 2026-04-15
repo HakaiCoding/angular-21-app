@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
@@ -16,10 +16,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-root',
   imports: [
+    TranslocoDirective,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
@@ -41,4 +43,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {}
+export class App {
+  readonly languages = ['en', 'fr', 'de', 'es', 'it'] as const;
+  private readonly translocoService = inject(TranslocoService);
+
+  setLang(lang: (typeof this.languages)[number]): void {
+    this.translocoService.setActiveLang(lang);
+  }
+}
