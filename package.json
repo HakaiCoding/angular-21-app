@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "skills:install": "npx skills add https://github.com/alfredoperez/angular-best-practices --skill angular-best-practices --skill angular-best-practices-material --skill angular-best-practices-transloco --yes && npx skills add https://github.com/analogjs/angular-skills --skill angular-component --skill angular-signals --skill angular-forms --skill angular-routing --skill angular-http --skill angular-di --skill angular-directives --yes && npx skills add https://github.com/juliusbrussee/caveman --skill caveman-commit --yes",
+    "skills:restore": "npx skills experimental_install -y",
+    "skills:list": "npx skills ls --json"
   },
   "private": true,
   "packageManager": "npm@11.6.2",

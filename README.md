@@ -1,59 +1,88 @@
-# Angular21App
+# ANGULAR-21-APP
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+Angular 21 application scaffolded with Angular CLI (`21.2.7`) and configured with project-level AI skills for Codex.
 
-## Development server
+## Prerequisites
 
-To start a local development server, run:
+- Node.js (LTS recommended)
+- npm (project uses `npm@11.6.2`)
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Setup
 
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Development
+
+Start the local dev server:
 
 ```bash
-ng generate --help
+npm start
 ```
 
-## Building
+App runs at `http://localhost:4200/`.
 
-To build the project run:
+## Build
 
 ```bash
-ng build
+npm run build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Test
 
 ```bash
-ng test
+npm test
 ```
 
-## Running end-to-end tests
+## Angular CLI
 
-For end-to-end (e2e) testing, run:
+Generate code:
 
 ```bash
-ng e2e
+npx ng generate component my-feature
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+See all generators:
 
-## Additional Resources
+```bash
+npx ng generate --help
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Project Skills (Codex)
+
+This repo uses project-scoped skills stored in `.agents/skills/` and pinned in `skills-lock.json`.
+
+Restore pinned skills (recommended on fresh clones):
+
+```bash
+npm run skills:restore
+```
+
+Install/update from source repositories:
+
+```bash
+npm run skills:install
+```
+
+List installed project skills:
+
+```bash
+npm run skills:list
+```
+
+Installed skills:
+
+- `angular-best-practices`
+- `angular-best-practices-material`
+- `angular-best-practices-transloco`
+- `angular-component`
+- `angular-signals`
+- `angular-forms`
+- `angular-routing`
+- `angular-http`
+- `angular-di`
+- `angular-directives`
+- `caveman-commit`
+
+After skill changes, restart Codex so the updated skills are loaded.
