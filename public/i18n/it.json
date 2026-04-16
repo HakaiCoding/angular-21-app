@@ -1,5 +1,9 @@
-﻿{
+{
   "shell": {
-    "brand": "Base Angular"
+    "brand": "Base Angular",
+    "nav": {
+      "primary": "Navigazione principale",
+      "home": "Home"
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { AppShell } from './app-shell';
 
@@ -9,7 +10,18 @@ describe('AppShell', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppShell],
+      imports: [
+        AppShell,
+        TranslocoTestingModule.forRoot({
+          translocoConfig: {
+            availableLangs: ['en'],
+            defaultLang: 'en',
+          },
+          langs: {
+            en: {},
+          },
+        }),
+      ],
       providers: [provideRouter([])],
     })
     .compileComponents();

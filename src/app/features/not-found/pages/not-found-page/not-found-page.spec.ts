@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
 import { NotFoundPage } from './not-found-page';
 
@@ -9,7 +10,18 @@ describe('NotFoundPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NotFoundPage],
+      imports: [
+        NotFoundPage,
+        TranslocoTestingModule.forRoot({
+          translocoConfig: {
+            availableLangs: ['en'],
+            defaultLang: 'en',
+          },
+          langs: {
+            en: {},
+          },
+        }),
+      ],
       providers: [provideRouter([])],
     })
     .compileComponents();

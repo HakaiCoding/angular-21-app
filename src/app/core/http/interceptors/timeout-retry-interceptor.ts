@@ -20,6 +20,9 @@ const isRetryableError = (error: unknown): boolean => {
 
 export const timeoutRetryInterceptor: HttpInterceptorFn = (req, next) => {
   const config = inject(API_CONFIG);
+  if (!req.url.startsWith(config.baseUrl)) {
+    return next(req);
+  }
 
   return next(req).pipe(
     timeout(config.requestTimeoutMs),

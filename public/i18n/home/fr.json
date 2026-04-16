@@ -1,0 +1,9 @@
+{
+  "title": "Accueil",
+  "loading": "Chargement des articles...",
+  "errorGeneric": "Impossible de charger les articles pour le moment.",
+  "errorNetwork": "Erreur reseau. Veuillez verifier votre connexion.",
+  "errorTimeout": "La requete a expire.",
+  "retry": "Reessayer",
+  "empty": "Aucun article trouve."
+}

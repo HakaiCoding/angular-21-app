@@ -1,7 +1,10 @@
-<div class="shell">
+<div *transloco="let t" class="shell">
   <header class="shell-header">
-    <nav aria-label="Primary">
-      <a routerLink="/home" routerLinkActive="active-link">Home</a>
+    <p class="shell-brand">{{ t('shell.brand') }}</p>
+    <nav [attr.aria-label]="t('shell.nav.primary')">
+      <a routerLink="/home" routerLinkActive="active-link">
+        {{ t('shell.nav.home') }}
+      </a>
     </nav>
   </header>
 

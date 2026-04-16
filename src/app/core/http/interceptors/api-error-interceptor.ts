@@ -3,8 +3,10 @@ import {
   HttpInterceptorFn,
   HttpRequest,
 } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { catchError, throwError, TimeoutError } from 'rxjs';
 import { ApiError } from '../models/api-error';
+import { API_CONFIG } from '../tokens/api-config';
 
 const RETRYABLE_STATUS_CODES = new Set([0, 408, 429, 500, 502, 503, 504]);
 
@@ -47,6 +49,11 @@ const mapToApiError = (error: unknown, req: HttpRequest<unknown>): ApiError => {
 };
 
 export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
+  const config = inject(API_CONFIG);
+  if (!req.url.startsWith(config.baseUrl)) {
+    return next(req);
+  }
+
   return next(req).pipe(
     catchError((error: unknown) => throwError(() => mapToApiError(error, req))),
   );

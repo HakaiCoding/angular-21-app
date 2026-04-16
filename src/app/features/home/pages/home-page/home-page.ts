@@ -5,6 +5,7 @@ import {
   inject,
   resource,
 } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { Post } from '../../../../core/http/models/post';
 import { isApiError } from '../../../../core/http/models/api-error';
@@ -12,7 +13,7 @@ import { PostsApi } from '../../data-access/posts-api';
 
 @Component({
   selector: 'app-home-page',
-  imports: [],
+  imports: [TranslocoDirective],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,10 +28,29 @@ export class HomePage {
 
   readonly apiErrorMessage = computed(() => {
     const error = this.postsResource.error();
-    if (!error || !isApiError(error)) {
-      return 'Unable to load posts right now.';
+    if (!error || !isApiError(error) || error.kind !== 'http') {
+      return null;
     }
 
     return error.message;
+  });
+
+  readonly apiErrorTranslationKey = computed(() => {
+    const error = this.postsResource.error();
+    if (!error || !isApiError(error)) {
+      return 'home.errorGeneric';
+    }
+
+    switch (error.kind) {
+      case 'network':
+        return 'home.errorNetwork';
+      case 'timeout':
+        return 'home.errorTimeout';
+      case 'unknown':
+        return 'home.errorGeneric';
+      case 'http':
+      default:
+        return 'home.errorGeneric';
+    }
   });
 }
