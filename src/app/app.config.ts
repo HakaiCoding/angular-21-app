@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
+import { ApplicationConfig, ErrorHandler, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -11,6 +11,8 @@ import { apiErrorInterceptor } from './core/http/interceptors/api-error-intercep
 import { timeoutRetryInterceptor } from './core/http/interceptors/timeout-retry-interceptor';
 import { environment } from '../environments/environment';
 import { APP_AVAILABLE_LANGUAGE_CODES, APP_DEFAULT_LANGUAGE } from './core/i18n/language-options';
+import { LOGGING_CONFIG } from './core/logging/tokens/logging-config';
+import { AppErrorHandler } from './core/logging/app-error-handler';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,6 +21,14 @@ export const appConfig: ApplicationConfig = {
     {
       provide: API_CONFIG,
       useValue: environment.api,
+    },
+    {
+      provide: LOGGING_CONFIG,
+      useValue: environment.logging,
+    },
+    {
+      provide: ErrorHandler,
+      useClass: AppErrorHandler,
     },
     provideHttpClient(
       withInterceptors([

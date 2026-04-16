@@ -18,6 +18,10 @@ export const isApiRequest = (requestUrl: string, baseUrl: string): boolean => {
     const requestPath = normalizePath(request.pathname);
     const basePath = normalizePath(base.pathname);
 
+    if (basePath === '/') {
+      return true;
+    }
+
     return requestPath === basePath || requestPath.startsWith(`${basePath}/`);
   } catch {
     return false;

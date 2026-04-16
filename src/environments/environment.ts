@@ -9,4 +9,7 @@ export const environment: Environment = {
     retryDelayMs: 300,
     enableAuthHeader: false,
   },
+  logging: {
+    level: 'debug',
+  },
 };

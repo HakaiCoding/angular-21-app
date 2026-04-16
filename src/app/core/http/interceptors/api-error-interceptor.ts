@@ -8,6 +8,7 @@ import { catchError, throwError, TimeoutError } from 'rxjs';
 import { ApiError } from '../models/api-error';
 import { API_CONFIG } from '../tokens/api-config';
 import { isApiRequest } from './is-api-request';
+import { LoggingService } from '../../logging/logging';
 
 const RETRYABLE_STATUS_CODES = new Set([0, 408, 429, 500, 502, 503, 504]);
 
@@ -70,11 +71,33 @@ const mapToApiError = (error: unknown, req: HttpRequest<unknown>): ApiError => {
 
 export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const config = inject(API_CONFIG);
+  const logger = inject(LoggingService);
+
   if (!isApiRequest(req.url, config.baseUrl)) {
     return next(req);
   }
 
   return next(req).pipe(
-    catchError((error: unknown) => throwError(() => mapToApiError(error, req))),
+    catchError((error: unknown) => {
+      const apiError = mapToApiError(error, req);
+      const context = {
+        feature: 'http',
+        interceptor: 'apiErrorInterceptor',
+        method: req.method,
+        url: req.urlWithParams,
+        kind: apiError.kind,
+        i18nKey: apiError.i18nKey,
+        retryable: apiError.retryable,
+        status: apiError.status,
+      };
+
+      if (apiError.retryable) {
+        logger.warn('API request failed with retryable error', context);
+      } else {
+        logger.error('API request failed with non-retryable error', context);
+      }
+
+      return throwError(() => apiError);
+    }),
   );
 };
