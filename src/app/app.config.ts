@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
-import { TranslocoHttpLoader } from './transloco-loader';
+import { TranslocoHttpLoader } from './core/i18n/transloco-http.loader';
 import { provideTransloco } from '@jsverse/transloco';
 
 export const appConfig: ApplicationConfig = {
