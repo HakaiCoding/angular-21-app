@@ -1,0 +1,40 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+}
+
+.shell-header {
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  padding: 12px 20px;
+}
+
+nav {
+  display: flex;
+  gap: 12px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+a:hover {
+  background: var(--mat-sys-surface-container-high);
+}
+
+.active-link {
+  background: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
+
+.shell-content {
+  padding: 24px;
+}
+
+@media (max-width: 600px) {
+  .shell-content {
+    padding: 16px;
+  }
+}

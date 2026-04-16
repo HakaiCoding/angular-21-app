@@ -1,0 +1,25 @@
+<section class="home-page">
+  <h1>Home</h1>
+
+  @switch (postsResource.status()) {
+    @case ('loading') {
+      <p>Loading posts...</p>
+    }
+    @case ('error') {
+      <p>{{ apiErrorMessage() }}</p>
+      <button type="button" (click)="postsResource.reload()">Retry</button>
+    }
+    @default {
+      <ul>
+        @for (post of postsResource.value(); track post.id) {
+          <li>
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.body }}</p>
+          </li>
+        } @empty {
+          <li>No posts found.</li>
+        }
+      </ul>
+    }
+  }
+</section>
