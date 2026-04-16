@@ -1,19 +1,5 @@
 ﻿{
   "shell": {
-    "brand": "Angular Foundation",
-    "nav": {
-      "home": "Home"
-    },
-    "languageSwitcherAriaLabel": "Select language"
-  },
-  "home": {
-    "title": "Build your Angular foundation",
-    "subtitle": "Routing and app shell are ready",
-    "description": "This home feature is lazy-loaded and rendered inside the root app shell."
-  },
-  "notFound": {
-    "title": "Page not found",
-    "description": "The requested page does not exist or has moved.",
-    "backHome": "Back to home"
+    "brand": "Angular Foundation"
   }
 }

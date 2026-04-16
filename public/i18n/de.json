@@ -1,19 +1,5 @@
 ﻿{
   "shell": {
-    "brand": "Angular Grundlage",
-    "nav": {
-      "home": "Start"
-    },
-    "languageSwitcherAriaLabel": "Sprache waehlen"
-  },
-  "home": {
-    "title": "Baue deine Angular Grundlage",
-    "subtitle": "Routing und App Shell sind bereit",
-    "description": "Diese Home Funktion wird lazy geladen und im zentralen Shell Layout gerendert."
-  },
-  "notFound": {
-    "title": "Seite nicht gefunden",
-    "description": "Die angeforderte Seite existiert nicht oder wurde verschoben.",
-    "backHome": "Zurueck zur Startseite"
+    "brand": "Angular Grundlage"
   }
 }
