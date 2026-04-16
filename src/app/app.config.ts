@@ -9,6 +9,7 @@ import { API_CONFIG } from './core/http/tokens/api-config';
 import { authInterceptor } from './core/http/interceptors/auth-interceptor';
 import { apiErrorInterceptor } from './core/http/interceptors/api-error-interceptor';
 import { timeoutRetryInterceptor } from './core/http/interceptors/timeout-retry-interceptor';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,13 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     {
       provide: API_CONFIG,
-      useValue: {
-        baseUrl: 'https://jsonplaceholder.typicode.com',
-        requestTimeoutMs: 5000,
-        retryCount: 2,
-        retryDelayMs: 300,
-        enableAuthHeader: false,
-      },
+      useValue: environment.api,
     },
     provideHttpClient(
       withInterceptors([

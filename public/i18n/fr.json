@@ -5,5 +5,11 @@
       "primary": "Navigation principale",
       "home": "Accueil"
     }
+  },
+  "errors": {
+    "network": "Erreur reseau. Veuillez verifier votre connexion.",
+    "timeout": "La requete a expire.",
+    "http": "La requete a echoue.",
+    "unknown": "Erreur inattendue lors de l'appel API."
   }
 }

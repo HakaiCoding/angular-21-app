@@ -5,5 +5,11 @@
       "primary": "Navigazione principale",
       "home": "Home"
     }
+  },
+  "errors": {
+    "network": "Errore di rete. Controlla la connessione.",
+    "timeout": "La richiesta ha superato il tempo limite.",
+    "http": "Richiesta non riuscita.",
+    "unknown": "Errore imprevisto durante la chiamata API."
   }
 }

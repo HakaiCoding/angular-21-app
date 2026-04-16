@@ -38,19 +38,9 @@ export class HomePage {
   readonly apiErrorTranslationKey = computed(() => {
     const error = this.postsResource.error();
     if (!error || !isApiError(error)) {
-      return 'home.errorGeneric';
+      return 'errors.unknown';
     }
 
-    switch (error.kind) {
-      case 'network':
-        return 'home.errorNetwork';
-      case 'timeout':
-        return 'home.errorTimeout';
-      case 'unknown':
-        return 'home.errorGeneric';
-      case 'http':
-      default:
-        return 'home.errorGeneric';
-    }
+    return error.i18nKey;
   });
 }

@@ -2,6 +2,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { API_CONFIG } from '../tokens/api-config';
 import { AuthToken } from '../../services/auth-token';
+import { isApiRequest } from './is-api-request';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authToken = inject(AuthToken);
@@ -12,7 +13,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
 
-  if (!req.url.startsWith(config.baseUrl)) {
+  if (!isApiRequest(req.url, config.baseUrl)) {
     return next(req);
   }
 

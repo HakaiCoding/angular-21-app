@@ -6,7 +6,8 @@
       <p>{{ t('home.loading') }}</p>
     }
     @case ('error') {
-      <p>{{ apiErrorMessage() ?? t(apiErrorTranslationKey()) }}</p>
+      @let errorMessage = apiErrorMessage();
+      <p>{{ errorMessage ? errorMessage : t(apiErrorTranslationKey()) }}</p>
       <button type="button" (click)="postsResource.reload()">
         {{ t('home.retry') }}
       </button>
