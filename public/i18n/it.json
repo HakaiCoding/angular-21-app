@@ -1,7 +1,19 @@
-{
-  "app": {
-    "title": "Applicazione Angular 21",
-    "docs": "Documentazione",
-    "primaryAction": "Azione principale"
+﻿{
+  "shell": {
+    "brand": "Base Angular",
+    "nav": {
+      "home": "Home"
+    },
+    "languageSwitcherAriaLabel": "Seleziona lingua"
+  },
+  "home": {
+    "title": "Costruisci la tua base Angular",
+    "subtitle": "Routing e shell applicativa sono pronti",
+    "description": "Questa funzionalita home e caricata in lazy loading dentro la shell principale."
+  },
+  "notFound": {
+    "title": "Pagina non trovata",
+    "description": "La pagina richiesta non esiste oppure e stata spostata.",
+    "backHome": "Torna alla home"
   }
 }

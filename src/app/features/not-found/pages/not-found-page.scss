@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.not-found-page {
+  min-height: 60vh;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 12px;
+}
+
+h1,
+p {
+  margin: 0;
+}

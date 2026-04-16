@@ -1,7 +1,19 @@
-{
-  "app": {
-    "title": "Application Angular 21",
-    "docs": "Documentation",
-    "primaryAction": "Action principale"
+﻿{
+  "shell": {
+    "brand": "Fondation Angular",
+    "nav": {
+      "home": "Accueil"
+    },
+    "languageSwitcherAriaLabel": "Choisir la langue"
+  },
+  "home": {
+    "title": "Construisez votre fondation Angular",
+    "subtitle": "Le routage et la structure sont prets",
+    "description": "Cette fonctionnalite d accueil est chargee en lazy loading dans le shell principal."
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "La page demandee n existe pas ou a ete deplacee.",
+    "backHome": "Retour a l accueil"
   }
 }

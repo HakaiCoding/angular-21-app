@@ -1,7 +1,19 @@
-{
-  "app": {
-    "title": "Aplicación Angular 21",
-    "docs": "Documentación",
-    "primaryAction": "Acción principal"
+﻿{
+  "shell": {
+    "brand": "Base Angular",
+    "nav": {
+      "home": "Inicio"
+    },
+    "languageSwitcherAriaLabel": "Seleccionar idioma"
+  },
+  "home": {
+    "title": "Construye tu base Angular",
+    "subtitle": "El enrutado y la shell principal estan listos",
+    "description": "Esta funcionalidad de inicio se carga de forma diferida dentro de la shell principal."
+  },
+  "notFound": {
+    "title": "Pagina no encontrada",
+    "description": "La pagina solicitada no existe o fue movida.",
+    "backHome": "Volver al inicio"
   }
 }

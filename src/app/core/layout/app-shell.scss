@@ -1,0 +1,56 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+}
+
+.app-shell__toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 8px;
+}
+
+.app-shell__brand {
+  font-weight: 600;
+}
+
+.app-shell__nav {
+  display: flex;
+  align-items: center;
+}
+
+.active-link {
+  background-color: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
+}
+
+.app-shell__spacer {
+  flex: 1 1 auto;
+}
+
+.app-shell__lang-switcher {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.active-lang {
+  border-color: var(--mat-sys-primary);
+  color: var(--mat-sys-primary);
+}
+
+.app-shell__content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 32px;
+}
+
+@media (max-width: 720px) {
+  .app-shell__toolbar {
+    flex-wrap: wrap;
+  }
+
+  .app-shell__nav {
+    width: 100%;
+    order: 3;
+  }
+}
