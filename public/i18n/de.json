@@ -1,6 +1,9 @@
 {
   "shell": {
     "brand": "Angular Grundlage",
+    "languageSwitcher": {
+      "triggerAriaLabel": "Sprache wechseln. Aktuell: {{ language }}"
+    },
     "nav": {
       "primary": "Hauptnavigation",
       "home": "Startseite"

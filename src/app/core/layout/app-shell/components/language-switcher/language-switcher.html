@@ -1,22 +1,24 @@
-<button class="lang-trigger-button"
-  matButton="tonal"
-  type="button"
-  [matMenuTriggerFor]="languageMenu"
-  [attr.aria-label]="'Change language. Current: ' + currentLanguage().label"
->
-  <span class="lang-trigger-content">
-    <img
-      class="lang-flag"
-      [src]="currentLanguage().flagUrl"
-      [alt]="currentLanguage().label + ' flag'"
-      width="20"
-      height="20"
-      loading="lazy"
-      decoding="async"
-    />
-    <mat-icon aria-hidden="true">arrow_drop_down</mat-icon>
-  </span>
-</button>
+<ng-container *transloco="let t">
+  <button class="lang-trigger-button"
+    matButton="tonal"
+    type="button"
+    [matMenuTriggerFor]="languageMenu"
+    [attr.aria-label]="t('shell.languageSwitcher.triggerAriaLabel', { language: currentLanguage().label })"
+  >
+    <span class="lang-trigger-content">
+      <img
+        class="lang-flag"
+        [src]="currentLanguage().flagUrl"
+        [alt]="currentLanguage().label + ' flag'"
+        width="20"
+        height="20"
+        loading="lazy"
+        decoding="async"
+      />
+      <mat-icon aria-hidden="true">arrow_drop_down</mat-icon>
+    </span>
+  </button>
+</ng-container>
 
 <mat-menu #languageMenu="matMenu">
   @for (language of languages(); track language.code) {

@@ -18,7 +18,18 @@ describe('LanguageSwitcher', () => {
             availableLangs: APP_AVAILABLE_LANGUAGE_CODES,
             defaultLang: APP_DEFAULT_LANGUAGE.code,
           },
-          langs: Object.fromEntries(APP_AVAILABLE_LANGUAGE_CODES.map((code) => [code, {}])),
+          langs: Object.fromEntries(
+            APP_AVAILABLE_LANGUAGE_CODES.map((code) => [
+              code,
+              {
+                shell: {
+                  languageSwitcher: {
+                    triggerAriaLabel: 'Change language. Current: {{ language }}',
+                  },
+                },
+              },
+            ]),
+          ),
         }),
       ],
     }).compileComponents();

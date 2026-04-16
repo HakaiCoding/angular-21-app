@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { TranslocoService } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { APP_DEFAULT_LANGUAGE, APP_LANGUAGE_OPTIONS } from '../../../../i18n/language-options';
 
 @Component({
   selector: 'app-language-switcher',
-  imports: [MatButtonModule, MatMenuModule, MatIconModule],
+  imports: [MatButtonModule, MatMenuModule, MatIconModule, TranslocoDirective],
   templateUrl: './language-switcher.html',
   styleUrl: './language-switcher.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
