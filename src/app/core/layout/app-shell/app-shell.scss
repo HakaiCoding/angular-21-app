@@ -8,14 +8,22 @@
   padding: 12px 20px;
 }
 
+.shell-header-top {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
 .shell-brand {
   font: var(--mat-sys-title-medium);
-  margin: 0 0 8px;
+  margin: 0;
 }
 
 nav {
   display: flex;
   gap: 12px;
+  margin-top: 8px;
 }
 
 a {

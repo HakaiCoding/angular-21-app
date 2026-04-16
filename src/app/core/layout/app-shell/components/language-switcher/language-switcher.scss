@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  @include mat.button-overrides((tonal-container-shape: 0,
+      tonal-touch-target-size: 38px,
+      tonal-container-height: 32px));
+}
+
+.lang-trigger-button {
+  width: 64px;
+}
+
+.lang-trigger-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 64px;
+}
+
+.lang-option-content {
+  align-items: center;
+  display: inline-flex;
+  gap: .5rem;
+}
+
+.lang-flag {
+  border-radius: 2px;
+  object-fit: cover;
+}

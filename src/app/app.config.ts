@@ -10,6 +10,7 @@ import { authInterceptor } from './core/http/interceptors/auth-interceptor';
 import { apiErrorInterceptor } from './core/http/interceptors/api-error-interceptor';
 import { timeoutRetryInterceptor } from './core/http/interceptors/timeout-retry-interceptor';
 import { environment } from '../environments/environment';
+import { APP_AVAILABLE_LANGUAGE_CODES, APP_DEFAULT_LANGUAGE } from './core/i18n/language-options';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,8 +29,8 @@ export const appConfig: ApplicationConfig = {
     ),
     provideTransloco({
       config: {
-        availableLangs: ['en', 'fr', 'de', 'es', 'it'],
-        defaultLang: 'en',
+        availableLangs: APP_AVAILABLE_LANGUAGE_CODES,
+        defaultLang: APP_DEFAULT_LANGUAGE.code,
         // Remove this option if your application doesn't support changing language in runtime.
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
