@@ -9,6 +9,7 @@ import { ApiError } from '../models/api-error';
 import { API_CONFIG } from '../tokens/api-config';
 import { isApiRequest } from './is-api-request';
 import { LoggingService } from '../../logging/logging';
+import { NotificationService } from '../../notifications/notification';
 
 const RETRYABLE_STATUS_CODES = new Set([0, 408, 429, 500, 502, 503, 504]);
 
@@ -72,6 +73,7 @@ const mapToApiError = (error: unknown, req: HttpRequest<unknown>): ApiError => {
 export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const config = inject(API_CONFIG);
   const logger = inject(LoggingService);
+  const notifications = inject(NotificationService);
 
   if (!isApiRequest(req.url, config.baseUrl)) {
     return next(req);
@@ -96,6 +98,14 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
       } else {
         logger.error('API request failed with non-retryable error', context);
       }
+
+      notifications.show({
+        level: apiError.retryable ? 'warn' : 'error',
+        messageKey: apiError.i18nKey,
+        message: apiError.kind === 'http' ? apiError.message : undefined,
+        dedupeKey: `api:${apiError.kind}:${apiError.status ?? 'none'}:${req.method}:${req.url}`,
+        context,
+      });
 
       return throwError(() => apiError);
     }),

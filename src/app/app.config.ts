@@ -13,6 +13,7 @@ import { environment } from '../environments/environment';
 import { APP_AVAILABLE_LANGUAGE_CODES, APP_DEFAULT_LANGUAGE } from './core/i18n/language-options';
 import { LOGGING_CONFIG } from './core/logging/tokens/logging-config';
 import { AppErrorHandler } from './core/logging/app-error-handler';
+import { provideNotifications } from './core/notifications/providers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,6 +31,7 @@ export const appConfig: ApplicationConfig = {
       provide: ErrorHandler,
       useClass: AppErrorHandler,
     },
+    provideNotifications(),
     provideHttpClient(
       withInterceptors([
         authInterceptor,

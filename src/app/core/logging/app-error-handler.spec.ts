@@ -4,13 +4,16 @@ import { Router } from '@angular/router';
 import { AppErrorHandler } from './app-error-handler';
 import { LoggingService } from './logging';
 import type { LogContext } from './models/logging-config';
+import { NotificationService } from '../notifications/notification';
 
 describe('AppErrorHandler', () => {
   let handler: AppErrorHandler;
   let logCalls: Array<{ message: string; context: LogContext }>;
+  let notificationCalls: Array<{ message: string; options: { context?: LogContext } | undefined }>;
 
   beforeEach(() => {
     logCalls = [];
+    notificationCalls = [];
 
     TestBed.configureTestingModule({
       providers: [
@@ -20,6 +23,14 @@ describe('AppErrorHandler', () => {
           useValue: {
             error: (message: string, context: LogContext) => {
               logCalls.push({ message, context });
+            },
+          },
+        },
+        {
+          provide: NotificationService,
+          useValue: {
+            error: (message: string, options?: { context?: LogContext }) => {
+              notificationCalls.push({ message, options });
             },
           },
         },
@@ -47,6 +58,12 @@ describe('AppErrorHandler', () => {
       errorName: 'Error',
       errorMessage: 'Unexpected failure',
     });
+    expect(notificationCalls.length).toBe(1);
+    expect(notificationCalls[0].message).toBe('errors.unknown');
+    expect(notificationCalls[0].options?.context).toMatchObject({
+      feature: 'runtime',
+      area: 'global-error-handler',
+    });
   });
 
   it('unwraps ngOriginalError wrappers before logging', () => {
@@ -58,6 +75,7 @@ describe('AppErrorHandler', () => {
     expect(logCalls[0].context).toMatchObject({
       errorMessage: 'Inner error',
     });
+    expect(notificationCalls.length).toBe(1);
   });
 
   it('logs non-Error throwables safely', () => {
@@ -71,5 +89,27 @@ describe('AppErrorHandler', () => {
       route: '/home',
       throwable: 'failure',
     });
+    expect(notificationCalls.length).toBe(1);
+  });
+
+  it('does not notify users for ApiError instances', () => {
+    handler.handleError({
+      kind: 'network',
+      i18nKey: 'errors.network',
+      retryable: true,
+    });
+
+    expect(logCalls.length).toBe(1);
+    expect(notificationCalls.length).toBe(0);
+  });
+
+  it('does not notify users for AbortError', () => {
+    const abortError = new Error('Request aborted');
+    abortError.name = 'AbortError';
+
+    handler.handleError(abortError);
+
+    expect(logCalls.length).toBe(1);
+    expect(notificationCalls.length).toBe(0);
   });
 });

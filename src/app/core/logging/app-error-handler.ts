@@ -1,5 +1,7 @@
 import { ErrorHandler, Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { isApiError } from '../http/models/api-error';
+import { NotificationService } from '../notifications/notification';
 import type { LogContext } from './models/logging-config';
 import { LoggingService } from './logging';
 
@@ -21,6 +23,7 @@ const unwrapAngularError = (error: unknown): unknown => {
 @Injectable()
 export class AppErrorHandler implements ErrorHandler {
   private readonly logger = inject(LoggingService);
+  private readonly notifications = inject(NotificationService);
   private readonly router = inject(Router, { optional: true });
 
   handleError(error: unknown): void {
@@ -31,6 +34,15 @@ export class AppErrorHandler implements ErrorHandler {
       : 'Unhandled non-error throwable';
 
     this.logger.error(message, context);
+
+    if (!this.shouldNotifyUser(normalizedError)) {
+      return;
+    }
+
+    this.notifications.error('errors.unknown', {
+      dedupeKey: `runtime:unknown:${this.router?.url ?? 'no-route'}`,
+      context,
+    });
   }
 
   private buildContext(error: unknown): LogContext {
@@ -61,5 +73,17 @@ export class AppErrorHandler implements ErrorHandler {
       ...baseContext,
       throwable: String(error),
     };
+  }
+
+  private shouldNotifyUser(error: unknown): boolean {
+    if (isApiError(error)) {
+      return false;
+    }
+
+    if (error instanceof Error && error.name === 'AbortError') {
+      return false;
+    }
+
+    return true;
   }
 }
