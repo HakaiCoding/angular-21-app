@@ -1,4 +1,4 @@
 <section *transloco="let t" class="not-found">
   <h1>{{ t('notFound.title') }}</h1>
-  <a routerLink="/">{{ t('notFound.backHome') }}</a>
+  <a [routerLink]="homeLink">{{ t('notFound.backHome') }}</a>
 </section>

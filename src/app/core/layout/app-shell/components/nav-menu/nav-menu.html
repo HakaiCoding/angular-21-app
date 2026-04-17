@@ -1,12 +1,14 @@
 <nav *transloco="let t" class="nav-menu" [attr.aria-label]="t('shell.nav.primary')">
-  <a
-    class="nav-link"
-    matButton="text"
-    routerLink="/"
-    routerLinkActive="active-link"
-    [routerLinkActiveOptions]="{ exact: true }"
-    ariaCurrentWhenActive="page"
-  >
-    {{ t('shell.nav.home') }}
-  </a>
+  @for (item of items; track item.id) {
+    <a
+      class="nav-link"
+      matButton="text"
+      [routerLink]="item.link"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="item.activeMatchOptions"
+      ariaCurrentWhenActive="page"
+    >
+      {{ t(item.labelKey) }}
+    </a>
+  }
 </nav>
