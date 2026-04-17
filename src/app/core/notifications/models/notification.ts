@@ -14,6 +14,7 @@ export interface NotificationInput {
 }
 
 export interface NotificationOptions {
+  isMessageKey?: boolean;
   params?: Record<string, unknown>;
   actionKey?: string;
   actionParams?: Record<string, unknown>;

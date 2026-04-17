@@ -40,6 +40,7 @@ export class AppErrorHandler implements ErrorHandler {
     }
 
     this.notifications.error('errors.unknown', {
+      isMessageKey: true,
       dedupeKey: `runtime:unknown:${this.router?.url ?? 'no-route'}`,
       context,
     });

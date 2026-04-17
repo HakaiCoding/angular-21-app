@@ -31,7 +31,7 @@ export const appConfig: ApplicationConfig = {
       provide: ErrorHandler,
       useClass: AppErrorHandler,
     },
-    provideNotifications(),
+    provideNotifications(environment.notifications),
     provideHttpClient(
       withInterceptors([
         authInterceptor,

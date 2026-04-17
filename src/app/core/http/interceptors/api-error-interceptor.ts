@@ -99,13 +99,28 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
         logger.error('API request failed with non-retryable error', context);
       }
 
-      notifications.show({
-        level: apiError.retryable ? 'warn' : 'error',
-        messageKey: apiError.i18nKey,
-        message: apiError.kind === 'http' ? apiError.message : undefined,
-        dedupeKey: `api:${apiError.kind}:${apiError.status ?? 'none'}:${req.method}:${req.url}`,
-        context,
-      });
+      const dedupeKey = `api:${apiError.kind}:${apiError.status ?? 'none'}:${req.method}:${req.url}`;
+      if (apiError.kind === 'http' && apiError.message) {
+        notifications.show({
+          level: apiError.retryable ? 'warn' : 'error',
+          messageKey: apiError.i18nKey,
+          message: apiError.message,
+          dedupeKey,
+          context,
+        });
+      } else if (apiError.retryable) {
+        notifications.warn(apiError.i18nKey, {
+          isMessageKey: true,
+          dedupeKey,
+          context,
+        });
+      } else {
+        notifications.error(apiError.i18nKey, {
+          isMessageKey: true,
+          dedupeKey,
+          context,
+        });
+      }
 
       return throwError(() => apiError);
     }),

@@ -7,22 +7,7 @@ import {
 import { TranslocoService } from '@jsverse/transloco';
 import { take } from 'rxjs';
 import type { NotificationInput, NotificationLevel, NotificationOptions } from './models/notification';
-
-const DEFAULT_DURATION_BY_LEVEL: Record<NotificationLevel, number> = {
-  success: 3000,
-  info: 3500,
-  warn: 5000,
-  error: 7000,
-};
-
-const DEFAULT_POLITENESS_BY_LEVEL: Record<NotificationLevel, NonNullable<MatSnackBarConfig['politeness']>> = {
-  success: 'polite',
-  info: 'polite',
-  warn: 'assertive',
-  error: 'assertive',
-};
-
-const TRANSLATION_KEY_PATTERN = /^[a-z0-9_-]+(?:\.[a-z0-9_-]+)+$/i;
+import { NOTIFICATION_CONFIG } from './tokens/notification-config';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +15,7 @@ const TRANSLATION_KEY_PATTERN = /^[a-z0-9_-]+(?:\.[a-z0-9_-]+)+$/i;
 export class NotificationService {
   private readonly snackBar = inject(MatSnackBar);
   private readonly transloco = inject(TranslocoService);
+  private readonly config = inject(NOTIFICATION_CONFIG);
 
   readonly queue = signal<readonly NotificationInput[]>([]);
   readonly active = signal<NotificationInput | null>(null);
@@ -90,10 +76,11 @@ export class NotificationService {
     keyOrText: string,
     options: NotificationOptions,
   ): NotificationInput {
+    const { isMessageKey = false, ...rest } = options;
     const trimmedValue = keyOrText.trim();
-    return TRANSLATION_KEY_PATTERN.test(trimmedValue)
-      ? { level, messageKey: trimmedValue, ...options }
-      : { level, message: trimmedValue, ...options };
+    return isMessageKey
+      ? { level, messageKey: trimmedValue, ...rest }
+      : { level, message: trimmedValue, ...rest };
   }
 
   private isDuplicate(dedupeKey: string | undefined): boolean {
@@ -115,11 +102,18 @@ export class NotificationService {
       return;
     }
 
+    const hasAction = Boolean(input.actionKey);
+    const duration = input.durationMs
+      ?? (input.persist
+        ? (hasAction ? undefined : this.config.persistWithoutActionDurationMs)
+        : this.config.durationByLevel[input.level]);
+
     const config: MatSnackBarConfig = {
-      duration: input.persist ? undefined : (input.durationMs ?? DEFAULT_DURATION_BY_LEVEL[input.level]),
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      politeness: DEFAULT_POLITENESS_BY_LEVEL[input.level],
+      duration,
+      horizontalPosition: this.config.horizontalPosition,
+      verticalPosition: this.config.verticalPosition,
+      politeness: this.config.politenessByLevel[input.level],
+      panelClass: [...this.config.panelClassByLevel[input.level]],
     };
 
     const action = input.actionKey

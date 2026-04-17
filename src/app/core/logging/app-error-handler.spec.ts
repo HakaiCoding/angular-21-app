@@ -9,7 +9,10 @@ import { NotificationService } from '../notifications/notification';
 describe('AppErrorHandler', () => {
   let handler: AppErrorHandler;
   let logCalls: Array<{ message: string; context: LogContext }>;
-  let notificationCalls: Array<{ message: string; options: { context?: LogContext } | undefined }>;
+  let notificationCalls: Array<{
+    message: string;
+    options: (Record<string, unknown> & { context?: LogContext }) | undefined;
+  }>;
 
   beforeEach(() => {
     logCalls = [];
@@ -29,7 +32,7 @@ describe('AppErrorHandler', () => {
         {
           provide: NotificationService,
           useValue: {
-            error: (message: string, options?: { context?: LogContext }) => {
+            error: (message: string, options?: Record<string, unknown> & { context?: LogContext }) => {
               notificationCalls.push({ message, options });
             },
           },

@@ -36,3 +36,27 @@ body {
 .mat-mdc-menu-content {
   padding: 0 !important;
 }
+
+.mat-mdc-snack-bar-container.notif-success {
+  --mdc-snackbar-container-color: var(--mat-sys-secondary-container);
+  --mdc-snackbar-supporting-text-color: var(--mat-sys-on-secondary-container);
+  --mat-mdc-snack-bar-button-color: var(--mat-sys-primary);
+}
+
+.mat-mdc-snack-bar-container.notif-info {
+  --mdc-snackbar-container-color: var(--mat-sys-surface-container-high);
+  --mdc-snackbar-supporting-text-color: var(--mat-sys-on-surface);
+  --mat-mdc-snack-bar-button-color: var(--mat-sys-primary);
+}
+
+.mat-mdc-snack-bar-container.notif-warn {
+  --mdc-snackbar-container-color: var(--mat-sys-tertiary-container);
+  --mdc-snackbar-supporting-text-color: var(--mat-sys-on-tertiary-container);
+  --mat-mdc-snack-bar-button-color: var(--mat-sys-primary);
+}
+
+.mat-mdc-snack-bar-container.notif-error {
+  --mdc-snackbar-container-color: var(--mat-sys-error-container);
+  --mdc-snackbar-supporting-text-color: var(--mat-sys-on-error-container);
+  --mat-mdc-snack-bar-button-color: var(--mat-sys-error);
+}

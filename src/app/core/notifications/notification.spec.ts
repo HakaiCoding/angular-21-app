@@ -1,20 +1,28 @@
 import { TestBed } from '@angular/core/testing';
-import { MatSnackBar, MatSnackBarDismiss, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
+import {
+  MatSnackBar,
+  MatSnackBarConfig,
+  MatSnackBarDismiss,
+  MatSnackBarRef,
+  TextOnlySnackBar,
+} from '@angular/material/snack-bar';
 import { TranslocoService } from '@jsverse/transloco';
 import { Observable, Subject } from 'rxjs';
+import { NOTIFICATION_CONFIG } from './tokens/notification-config';
 import { NotificationService } from './notification';
 
 interface SnackBarOpenCall {
   message: string;
   action: string | undefined;
+  config: MatSnackBarConfig | undefined;
 }
 
 class MatSnackBarStub {
   readonly openCalls: SnackBarOpenCall[] = [];
   readonly dismissSubjects: Subject<MatSnackBarDismiss>[] = [];
 
-  open(message: string, action?: string): MatSnackBarRef<TextOnlySnackBar> {
-    this.openCalls.push({ message, action });
+  open(message: string, action?: string, config?: MatSnackBarConfig): MatSnackBarRef<TextOnlySnackBar> {
+    this.openCalls.push({ message, action, config });
     const dismissed$ = new Subject<MatSnackBarDismiss>();
     this.dismissSubjects.push(dismissed$);
 
@@ -68,6 +76,32 @@ describe('NotificationService', () => {
             },
           },
         },
+        {
+          provide: NOTIFICATION_CONFIG,
+          useValue: {
+            durationByLevel: {
+              success: 1111,
+              info: 2222,
+              warn: 3333,
+              error: 4444,
+            },
+            horizontalPosition: 'left',
+            verticalPosition: 'bottom',
+            politenessByLevel: {
+              success: 'polite',
+              info: 'polite',
+              warn: 'assertive',
+              error: 'assertive',
+            },
+            panelClassByLevel: {
+              success: ['notif', 'notif-success'],
+              info: ['notif', 'notif-info'],
+              warn: ['notif', 'notif-warn'],
+              error: ['notif', 'notif-error'],
+            },
+            persistWithoutActionDurationMs: 7777,
+          },
+        },
       ],
     });
 
@@ -79,13 +113,19 @@ describe('NotificationService', () => {
   });
 
   it('shows translated messages from translation keys', () => {
-    service.warn('errors.timeout', { actionKey: 'common.retry' });
+    service.warn('errors.timeout', { isMessageKey: true, actionKey: 'common.retry' });
     TestBed.flushEffects();
 
     expect(snackBar.openCalls.length).toBe(1);
     expect(snackBar.openCalls[0]).toEqual({
       message: 'The request timed out.',
       action: 'Retry',
+      config: expect.objectContaining({
+        duration: 3333,
+        horizontalPosition: 'left',
+        verticalPosition: 'bottom',
+        panelClass: ['notif', 'notif-warn'],
+      }),
     });
   });
 
@@ -102,8 +142,8 @@ describe('NotificationService', () => {
   });
 
   it('dedupes notifications with the same dedupe key', () => {
-    service.error('errors.timeout', { dedupeKey: 'timeout:home', persist: true });
-    service.error('errors.timeout', { dedupeKey: 'timeout:home', persist: true });
+    service.error('errors.timeout', { isMessageKey: true, dedupeKey: 'timeout:home', persist: true });
+    service.error('errors.timeout', { isMessageKey: true, dedupeKey: 'timeout:home', persist: true });
     TestBed.flushEffects();
 
     expect(snackBar.openCalls.length).toBe(1);
@@ -111,7 +151,7 @@ describe('NotificationService', () => {
   });
 
   it('processes the queue after active snackbar is dismissed', () => {
-    service.info('errors.timeout', { persist: true });
+    service.info('errors.timeout', { isMessageKey: true, persist: true, actionKey: 'common.retry' });
     service.success('Saved successfully');
     TestBed.flushEffects();
 
@@ -123,5 +163,13 @@ describe('NotificationService', () => {
 
     expect(snackBar.openCalls.length).toBe(2);
     expect(service.queue().length).toBe(0);
+  });
+
+  it('applies fallback duration when persist is true without action', () => {
+    service.error('errors.timeout', { isMessageKey: true, persist: true });
+    TestBed.flushEffects();
+
+    expect(snackBar.openCalls.length).toBe(1);
+    expect(snackBar.openCalls[0].config?.duration).toBe(7777);
   });
 });
