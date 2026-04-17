@@ -1,9 +1,3 @@
 {
-  "title": "Home",
-  "loading": "Loading posts...",
-  "errorGeneric": "Unable to load posts right now.",
-  "errorNetwork": "Network error. Please check your connection.",
-  "errorTimeout": "The request timed out.",
-  "retry": "Retry",
-  "empty": "No posts found."
+  "title": "Home"
 }

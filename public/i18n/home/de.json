@@ -1,9 +1,3 @@
 {
-  "title": "Startseite",
-  "loading": "Beitraege werden geladen...",
-  "errorGeneric": "Beitraege koennen derzeit nicht geladen werden.",
-  "errorNetwork": "Netzwerkfehler. Bitte pruefen Sie Ihre Verbindung.",
-  "errorTimeout": "Die Anfrage hat ein Zeitlimit ueberschritten.",
-  "retry": "Erneut versuchen",
-  "empty": "Keine Beitraege gefunden."
+  "title": "Startseite"
 }

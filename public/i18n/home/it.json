@@ -1,9 +1,3 @@
 {
-  "title": "Home",
-  "loading": "Caricamento dei post...",
-  "errorGeneric": "Impossibile caricare i post in questo momento.",
-  "errorNetwork": "Errore di rete. Controlla la connessione.",
-  "errorTimeout": "La richiesta ha superato il tempo limite.",
-  "retry": "Riprova",
-  "empty": "Nessun post trovato."
+  "title": "Home"
 }

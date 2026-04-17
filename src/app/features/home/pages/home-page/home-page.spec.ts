@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { of } from 'rxjs';
 
 import { HomePage } from './home-page';
-import { PostsApi } from '../../data-access/posts-api';
 
 describe('HomePage', () => {
   let component: HomePage;
@@ -22,14 +20,6 @@ describe('HomePage', () => {
             en: {},
           },
         }),
-      ],
-      providers: [
-        {
-          provide: PostsApi,
-          useValue: {
-            listPosts: () => of([]),
-          },
-        },
       ],
     })
     .compileComponents();

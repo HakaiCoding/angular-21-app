@@ -1,28 +1,3 @@
 <section *transloco="let t" class="home-page">
   <h1>{{ t('home.title') }}</h1>
-
-  @switch (postsResource.status()) {
-    @case ('loading') {
-      <p>{{ t('home.loading') }}</p>
-    }
-    @case ('error') {
-      @let errorMessage = apiErrorMessage();
-      <p>{{ errorMessage ? errorMessage : t(apiErrorTranslationKey()) }}</p>
-      <button type="button" (click)="postsResource.reload()">
-        {{ t('home.retry') }}
-      </button>
-    }
-    @default {
-      <ul>
-        @for (post of postsResource.value(); track post.id) {
-          <li>
-            <h2>{{ post.title }}</h2>
-            <p>{{ post.body }}</p>
-          </li>
-        } @empty {
-          <li>{{ t('home.empty') }}</li>
-        }
-      </ul>
-    }
-  }
 </section>

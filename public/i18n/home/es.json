@@ -1,9 +1,3 @@
 {
-  "title": "Inicio",
-  "loading": "Cargando publicaciones...",
-  "errorGeneric": "No se pueden cargar las publicaciones en este momento.",
-  "errorNetwork": "Error de red. Comprueba tu conexion.",
-  "errorTimeout": "La solicitud excedio el tiempo de espera.",
-  "retry": "Reintentar",
-  "empty": "No se encontraron publicaciones."
+  "title": "Inicio"
 }
