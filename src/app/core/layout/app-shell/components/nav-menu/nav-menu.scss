@@ -7,11 +7,15 @@
   gap: .5rem;
 }
 
-a:hover {
+.nav-link {
+  border-radius: 999px;
+}
+
+.nav-link:hover {
   background: var(--mat-sys-surface-container-high);
 }
 
-.active-link {
-  // background: var(--mat-sys-secondary-container);
+.nav-link.active-link {
+  background: var(--mat-sys-secondary-container);
   color: var(--mat-sys-on-secondary-container);
 }

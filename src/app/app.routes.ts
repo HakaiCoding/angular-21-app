@@ -13,11 +13,6 @@ export const routes: Routes = [
           import('./features/home/home.routes').then((m) => m.HOME_ROUTES),
       },
       {
-        path: 'home',
-        pathMatch: 'full',
-        redirectTo: '',
-      },
-      {
         path: 'not-found',
         providers: provideTranslocoScope('notFound'),
         loadComponent: () =>
