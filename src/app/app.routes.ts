@@ -9,13 +9,13 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        pathMatch: 'full',
-        redirectTo: 'home',
+        loadChildren: () =>
+          import('./features/home/home.routes').then((m) => m.HOME_ROUTES),
       },
       {
         path: 'home',
-        loadChildren: () =>
-          import('./features/home/home.routes').then((m) => m.HOME_ROUTES),
+        pathMatch: 'full',
+        redirectTo: '',
       },
       {
         path: 'not-found',

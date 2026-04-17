@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+.nav-menu {
+  display: flex;
+  gap: .5rem;
+}
+
+a:hover {
+  background: var(--mat-sys-surface-container-high);
+}
+
+.active-link {
+  // background: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}

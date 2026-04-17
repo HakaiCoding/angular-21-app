@@ -1,15 +1,9 @@
 <div *transloco="let t" class="shell">
-  <header class="shell-header">
-    <div class="shell-header-top">
-      <p class="shell-brand">{{ t('shell.brand') }}</p>
-      <app-language-switcher />
-    </div>
-    <nav [attr.aria-label]="t('shell.nav.primary')">
-      <a routerLink="/home" routerLinkActive="active-link">
-        {{ t('shell.nav.home') }}
-      </a>
-    </nav>
-  </header>
+  <mat-toolbar class="shell-toolbar">
+    <p class="shell-brand">{{ t('shell.brand') }}</p>
+    <app-nav-menu />
+    <app-language-switcher />
+  </mat-toolbar>
 
   <main class="shell-content">
     <router-outlet />

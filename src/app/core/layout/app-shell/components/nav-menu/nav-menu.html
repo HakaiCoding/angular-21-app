@@ -1,0 +1,5 @@
+<nav *transloco="let t" class="nav-menu" [attr.aria-label]="t('shell.nav.primary')">
+  <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+    {{ t('shell.nav.home') }}
+  </a>
+</nav>

@@ -26,6 +26,10 @@ body {
   height: 100%;
 }
 
+a {
+  text-decoration: none;
+}
+
 @media (forced-colors: active) {
   html {
     @include theme.high-contrast-overrides(color-scheme);
