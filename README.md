@@ -84,5 +84,6 @@ Installed skills:
 - `angular-di`
 - `angular-directives`
 - `caveman-commit`
+- `typescript-advanced-types`
 
 After skill changes, restart Codex so the updated skills are loaded.
