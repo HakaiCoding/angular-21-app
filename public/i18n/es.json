@@ -14,5 +14,8 @@
     "timeout": "La solicitud excedio el tiempo de espera.",
     "http": "La solicitud ha fallado.",
     "unknown": "Error inesperado al llamar a la API."
+  },
+  "runtime": {
+    "unexpected": "Error inesperado de la aplicacion."
   }
 }

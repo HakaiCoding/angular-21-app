@@ -14,5 +14,8 @@
     "timeout": "The request timed out.",
     "http": "Request failed.",
     "unknown": "Unexpected error while calling the API."
+  },
+  "runtime": {
+    "unexpected": "Unexpected application error."
   }
 }

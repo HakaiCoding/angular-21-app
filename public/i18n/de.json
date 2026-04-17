@@ -14,5 +14,8 @@
     "timeout": "Die Anfrage hat ein Zeitlimit ueberschritten.",
     "http": "Anfrage fehlgeschlagen.",
     "unknown": "Unerwarteter Fehler beim API-Aufruf."
+  },
+  "runtime": {
+    "unexpected": "Unerwarteter Anwendungsfehler."
   }
 }

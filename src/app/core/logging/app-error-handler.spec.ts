@@ -62,7 +62,7 @@ describe('AppErrorHandler', () => {
       errorMessage: 'Unexpected failure',
     });
     expect(notificationCalls.length).toBe(1);
-    expect(notificationCalls[0].message).toBe('errors.unknown');
+    expect(notificationCalls[0].message).toBe('runtime.unexpected');
     expect(notificationCalls[0].options?.context).toMatchObject({
       feature: 'runtime',
       area: 'global-error-handler',

@@ -10,6 +10,7 @@ import { API_CONFIG } from '../tokens/api-config';
 import { isApiRequest } from './is-api-request';
 import { LoggingService } from '../../logging/logging';
 import { NotificationService } from '../../notifications/notification';
+import { SKIP_GLOBAL_ERROR_LOG, SKIP_GLOBAL_ERROR_TOAST } from '../tokens/request-policy';
 
 const RETRYABLE_STATUS_CODES = new Set([0, 408, 429, 500, 502, 503, 504]);
 
@@ -93,10 +94,16 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
         status: apiError.status,
       };
 
-      if (apiError.retryable) {
-        logger.warn('API request failed with retryable error', context);
-      } else {
-        logger.error('API request failed with non-retryable error', context);
+      if (!req.context.get(SKIP_GLOBAL_ERROR_LOG)) {
+        if (apiError.retryable) {
+          logger.warn('API request failed with retryable error', context);
+        } else {
+          logger.error('API request failed with non-retryable error', context);
+        }
+      }
+
+      if (req.context.get(SKIP_GLOBAL_ERROR_TOAST)) {
+        return throwError(() => apiError);
       }
 
       const dedupeKey = `api:${apiError.kind}:${apiError.status ?? 'none'}:${req.method}:${req.url}`;

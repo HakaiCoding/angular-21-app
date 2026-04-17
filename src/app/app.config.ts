@@ -22,24 +22,39 @@ import { LOGGING_CONFIG } from './core/logging/tokens/logging-config';
 import { AppErrorHandler } from './core/logging/app-error-handler';
 import { provideNotifications } from './core/notifications/providers';
 import { LanguagePersistenceService } from './core/i18n/language-persistence';
+import { RuntimeConfigService } from './core/config/runtime-config';
+import { RUNTIME_CONFIG_DEFAULT } from './core/config/tokens/runtime-config';
+import { NOTIFICATION_CONFIG } from './core/notifications/tokens/notification-config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
     {
+      provide: RUNTIME_CONFIG_DEFAULT,
+      useValue: {
+        api: environment.api,
+        logging: environment.logging,
+        notifications: environment.notifications,
+      },
+    },
+    {
       provide: API_CONFIG,
-      useValue: environment.api,
+      useFactory: () => inject(RuntimeConfigService).config().api,
     },
     {
       provide: LOGGING_CONFIG,
-      useValue: environment.logging,
+      useFactory: () => inject(RuntimeConfigService).config().logging,
+    },
+    {
+      provide: NOTIFICATION_CONFIG,
+      useFactory: () => inject(RuntimeConfigService).config().notifications,
     },
     {
       provide: ErrorHandler,
       useClass: AppErrorHandler,
     },
-    provideNotifications(environment.notifications),
+    provideNotifications(),
     provideHttpClient(
       withInterceptors([
         authInterceptor,
@@ -57,7 +72,8 @@ export const appConfig: ApplicationConfig = {
       },
       loader: TranslocoHttpLoader,
     }),
-    provideAppInitializer(() => {
+    provideAppInitializer(async () => {
+      await inject(RuntimeConfigService).load();
       inject(LanguagePersistenceService).initialize();
     }),
   ],
