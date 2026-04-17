@@ -1,0 +1,103 @@
+<section *transloco="let t" class="demo-posts-page">
+  <header class="demo-posts-header">
+    <h1>{{ t('demoPosts.title') }}</h1>
+    <p>{{ t('demoPosts.description') }}</p>
+    <button matButton="filled" type="button" (click)="reloadPosts()">
+      {{ t('demoPosts.actions.reload') }}
+    </button>
+  </header>
+
+  <div class="demo-posts-grid">
+    <mat-card class="demo-card">
+      <h2>{{ t('demoPosts.sections.posts') }}</h2>
+
+      @if (isListLoading()) {
+        <div class="state-block">
+          <mat-spinner diameter="28" />
+          <span>{{ t('demoPosts.states.loadingPosts') }}</span>
+        </div>
+      } @else if (hasListError()) {
+        <div class="state-block">
+          <p>{{ t('demoPosts.states.errorPosts') }}</p>
+          <button matButton="outlined" type="button" (click)="reloadPosts()">
+            {{ t('demoPosts.actions.tryAgain') }}
+          </button>
+        </div>
+      } @else if (posts().length === 0) {
+        <p>{{ t('demoPosts.states.emptyPosts') }}</p>
+      } @else {
+        <ul class="post-list">
+          @for (post of posts(); track post.id) {
+            <li>
+              <button
+                class="post-button"
+                matButton="text"
+                type="button"
+                [class.post-button-active]="selectedPostId() === post.id"
+                (click)="selectPost(post.id)"
+              >
+                <span class="post-id">#{{ post.id }}</span>
+                <span>{{ post.title }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      }
+    </mat-card>
+
+    <mat-card class="demo-card">
+      <h2>{{ t('demoPosts.sections.selectedPost') }}</h2>
+
+      @if (selectedPostId() === null) {
+        <p>{{ t('demoPosts.states.selectPost') }}</p>
+      } @else if (isSelectedPostLoading()) {
+        <div class="state-block">
+          <mat-spinner diameter="28" />
+          <span>{{ t('demoPosts.states.loadingSelectedPost') }}</span>
+        </div>
+      } @else if (hasSelectedPostError()) {
+        <p>{{ t('demoPosts.states.errorSelectedPost') }}</p>
+      } @else if (selectedPost(); as post) {
+        <article class="post-details">
+          <p class="meta">
+            {{ t('demoPosts.labels.postId') }}: {{ post.id }}
+            -
+            {{ t('demoPosts.labels.userId') }}: {{ post.userId }}
+          </p>
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.body }}</p>
+          <button matButton="outlined" type="button" (click)="clearSelection()">
+            {{ t('demoPosts.actions.clearSelection') }}
+          </button>
+        </article>
+      }
+    </mat-card>
+
+    <mat-card class="demo-card">
+      <h2>{{ t('demoPosts.sections.comments') }}</h2>
+
+      @if (selectedPostId() === null) {
+        <p>{{ t('demoPosts.states.selectPostForComments') }}</p>
+      } @else if (isCommentListLoading()) {
+        <div class="state-block">
+          <mat-spinner diameter="28" />
+          <span>{{ t('demoPosts.states.loadingComments') }}</span>
+        </div>
+      } @else if (hasCommentListError()) {
+        <p>{{ t('demoPosts.states.errorComments') }}</p>
+      } @else if (comments().length === 0) {
+        <p>{{ t('demoPosts.states.emptyComments') }}</p>
+      } @else {
+        <ul class="comment-list">
+          @for (comment of comments(); track comment.id) {
+            <li class="comment-item">
+              <h3>{{ comment.name }}</h3>
+              <p class="meta">{{ comment.email }}</p>
+              <p>{{ comment.body }}</p>
+            </li>
+          }
+        </ul>
+      }
+    </mat-card>
+  </div>
+</section>

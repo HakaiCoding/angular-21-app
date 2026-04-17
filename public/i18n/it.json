@@ -6,7 +6,8 @@
     },
     "nav": {
       "primary": "Navigazione principale",
-      "home": "Home"
+      "home": "Home",
+      "demoPosts": "Post demo"
     }
   },
   "errors": {

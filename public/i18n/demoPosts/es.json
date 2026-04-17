@@ -1,0 +1,30 @@
+{
+  "title": "Posts de demo",
+  "description": "Feature de referencia que consume endpoints de JSONPlaceholder.",
+  "actions": {
+    "reload": "Recargar posts",
+    "tryAgain": "Intentar de nuevo",
+    "clearSelection": "Limpiar seleccion"
+  },
+  "sections": {
+    "posts": "Posts",
+    "selectedPost": "Post seleccionado",
+    "comments": "Comentarios"
+  },
+  "states": {
+    "loadingPosts": "Cargando posts...",
+    "errorPosts": "No se pudieron cargar los posts.",
+    "emptyPosts": "No hay posts.",
+    "selectPost": "Selecciona un post para cargar detalles.",
+    "loadingSelectedPost": "Cargando detalles del post...",
+    "errorSelectedPost": "No se pudo cargar el post seleccionado.",
+    "selectPostForComments": "Selecciona un post para cargar comentarios.",
+    "loadingComments": "Cargando comentarios...",
+    "errorComments": "No se pudieron cargar los comentarios.",
+    "emptyComments": "No hay comentarios para este post."
+  },
+  "labels": {
+    "postId": "Post",
+    "userId": "Usuario"
+  }
+}

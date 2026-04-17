@@ -18,4 +18,10 @@ export const APP_NAV_ITEMS: readonly AppNavItem[] = [
     labelKey: 'shell.nav.home',
     activeMatchOptions: { exact: true },
   },
+  {
+    id: 'demoPosts',
+    link: APP_ROUTE_LINKS.demoPosts,
+    labelKey: 'shell.nav.demoPosts',
+    activeMatchOptions: { exact: true },
+  },
 ];

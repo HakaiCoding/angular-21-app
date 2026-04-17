@@ -73,8 +73,11 @@ export const appConfig: ApplicationConfig = {
       loader: TranslocoHttpLoader,
     }),
     provideAppInitializer(async () => {
-      await inject(RuntimeConfigService).load();
-      inject(LanguagePersistenceService).initialize();
+      const runtimeConfig = inject(RuntimeConfigService);
+      const languagePersistence = inject(LanguagePersistenceService);
+
+      await runtimeConfig.load();
+      languagePersistence.initialize();
     }),
   ],
 };

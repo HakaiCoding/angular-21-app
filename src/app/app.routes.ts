@@ -14,6 +14,13 @@ export const routes: Routes = [
           import('./features/home/home.routes').then((m) => m.HOME_ROUTES),
       },
       {
+        path: APP_ROUTE_SEGMENTS.demoPosts,
+        loadChildren: () =>
+          import('./features/demo-posts/demo-posts.routes').then(
+            (m) => m.DEMO_POSTS_ROUTES,
+          ),
+      },
+      {
         path: APP_ROUTE_SEGMENTS.notFound,
         providers: provideTranslocoScope('notFound'),
         loadComponent: () =>

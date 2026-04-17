@@ -1,0 +1,30 @@
+{
+  "title": "Demo Posts",
+  "description": "Reference feature that consumes JSONPlaceholder example endpoints.",
+  "actions": {
+    "reload": "Reload Posts",
+    "tryAgain": "Try Again",
+    "clearSelection": "Clear Selection"
+  },
+  "sections": {
+    "posts": "Posts",
+    "selectedPost": "Selected Post",
+    "comments": "Comments"
+  },
+  "states": {
+    "loadingPosts": "Loading posts...",
+    "errorPosts": "Unable to load posts.",
+    "emptyPosts": "No posts found.",
+    "selectPost": "Select a post to load details.",
+    "loadingSelectedPost": "Loading post details...",
+    "errorSelectedPost": "Unable to load selected post.",
+    "selectPostForComments": "Select a post to load comments.",
+    "loadingComments": "Loading comments...",
+    "errorComments": "Unable to load comments.",
+    "emptyComments": "No comments found for this post."
+  },
+  "labels": {
+    "postId": "Post",
+    "userId": "User"
+  }
+}

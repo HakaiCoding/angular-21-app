@@ -1,0 +1,30 @@
+{
+  "title": "Demo-Posts",
+  "description": "Referenz-Feature fuer JSONPlaceholder-Endpunkte.",
+  "actions": {
+    "reload": "Posts neu laden",
+    "tryAgain": "Erneut versuchen",
+    "clearSelection": "Auswahl aufheben"
+  },
+  "sections": {
+    "posts": "Posts",
+    "selectedPost": "Ausgewaehlter Post",
+    "comments": "Kommentare"
+  },
+  "states": {
+    "loadingPosts": "Posts werden geladen...",
+    "errorPosts": "Posts konnten nicht geladen werden.",
+    "emptyPosts": "Keine Posts gefunden.",
+    "selectPost": "Waehlen Sie einen Post, um Details zu laden.",
+    "loadingSelectedPost": "Post-Details werden geladen...",
+    "errorSelectedPost": "Ausgewaehlter Post konnte nicht geladen werden.",
+    "selectPostForComments": "Waehlen Sie einen Post, um Kommentare zu laden.",
+    "loadingComments": "Kommentare werden geladen...",
+    "errorComments": "Kommentare konnten nicht geladen werden.",
+    "emptyComments": "Keine Kommentare fuer diesen Post."
+  },
+  "labels": {
+    "postId": "Post",
+    "userId": "Benutzer"
+  }
+}
