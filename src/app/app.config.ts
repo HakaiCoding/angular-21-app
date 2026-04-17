@@ -1,4 +1,11 @@
-import { ApplicationConfig, ErrorHandler, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
+import {
+  ApplicationConfig,
+  ErrorHandler,
+  inject,
+  isDevMode,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
+} from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -14,6 +21,7 @@ import { APP_AVAILABLE_LANGUAGE_CODES, APP_DEFAULT_LANGUAGE } from './core/i18n/
 import { LOGGING_CONFIG } from './core/logging/tokens/logging-config';
 import { AppErrorHandler } from './core/logging/app-error-handler';
 import { provideNotifications } from './core/notifications/providers';
+import { LanguagePersistenceService } from './core/i18n/language-persistence';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -48,6 +56,9 @@ export const appConfig: ApplicationConfig = {
         prodMode: !isDevMode(),
       },
       loader: TranslocoHttpLoader,
+    }),
+    provideAppInitializer(() => {
+      inject(LanguagePersistenceService).initialize();
     }),
   ],
 };
