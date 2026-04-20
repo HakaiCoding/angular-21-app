@@ -1,9 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
-import { LoggingService } from '../logging/logging';
+import { LoggingService } from '../logging/logging.service';
 import { STORAGE_KEYS } from '../storage/models/storage-schema';
-import { StorageService } from '../storage/storage';
+import { StorageService } from '../storage/storage.service';
 import { APP_AVAILABLE_LANGUAGE_CODES, type AppLanguageCode } from './language-options';
 
 @Injectable({

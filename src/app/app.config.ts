@@ -22,7 +22,7 @@ import { LOGGING_CONFIG } from './core/logging/tokens/logging-config';
 import { AppErrorHandler } from './core/logging/app-error-handler';
 import { provideNotifications } from './core/notifications/providers';
 import { LanguagePersistenceService } from './core/i18n/language-persistence';
-import { RuntimeConfigService } from './core/config/runtime-config';
+import { RuntimeConfigService } from './core/config/runtime-config.service';
 import { RUNTIME_CONFIG_DEFAULT } from './core/config/tokens/runtime-config';
 import { NOTIFICATION_CONFIG } from './core/notifications/tokens/notification-config';
 

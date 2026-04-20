@@ -5,17 +5,15 @@ import {
 } from '@angular/material/snack-bar';
 import { TranslocoService } from '@jsverse/transloco';
 import { take } from 'rxjs';
-import type { TranslationKey } from '../i18n/types';
+import { toTranslationKey, type TranslationKey } from '../i18n/types';
 import type {
+  NotificationBaseOptions,
   NotificationInput,
   NotificationKeyContent,
   NotificationKeyOptions,
   NotificationLevel,
-  NotificationTextOptions,
 } from './models/notification';
 import { NOTIFICATION_CONFIG } from './tokens/notification-config';
-
-const toTranslationKey = (value: string): TranslationKey => value as TranslationKey;
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +41,7 @@ export class NotificationService {
     this.openNotification(next);
   });
 
-  success(text: string, options: NotificationTextOptions = {}): void {
+  success(text: string, options: NotificationBaseOptions = {}): void {
     this.show(this.buildTextInput('success', text, options));
   }
 
@@ -51,7 +49,7 @@ export class NotificationService {
     this.show(this.buildKeyInput('success', key, options));
   }
 
-  info(text: string, options: NotificationTextOptions = {}): void {
+  info(text: string, options: NotificationBaseOptions = {}): void {
     this.show(this.buildTextInput('info', text, options));
   }
 
@@ -59,7 +57,7 @@ export class NotificationService {
     this.show(this.buildKeyInput('info', key, options));
   }
 
-  warn(text: string, options: NotificationTextOptions = {}): void {
+  warn(text: string, options: NotificationBaseOptions = {}): void {
     this.show(this.buildTextInput('warn', text, options));
   }
 
@@ -67,7 +65,7 @@ export class NotificationService {
     this.show(this.buildKeyInput('warn', key, options));
   }
 
-  error(text: string, options: NotificationTextOptions = {}): void {
+  error(text: string, options: NotificationBaseOptions = {}): void {
     this.show(this.buildTextInput('error', text, options));
   }
 
@@ -99,7 +97,7 @@ export class NotificationService {
   private buildTextInput(
     level: NotificationLevel,
     text: string,
-    options: NotificationTextOptions,
+    options: NotificationBaseOptions,
   ): NotificationInput {
     return {
       ...options,
@@ -145,14 +143,14 @@ export class NotificationService {
       };
     }
 
-    const key = input.content.key.trim();
+    const key = toTranslationKey(input.content.key);
     if (!key) {
       return null;
     }
 
     const content: NotificationKeyContent = {
       kind: 'key',
-      key: toTranslationKey(key),
+      key,
       params: input.content.params,
     };
 

@@ -9,7 +9,7 @@ import {
 import { TranslocoService } from '@jsverse/transloco';
 import { Observable, Subject } from 'rxjs';
 import { NOTIFICATION_CONFIG } from './tokens/notification-config';
-import { NotificationService } from './notification';
+import { NotificationService } from './notification.service';
 
 interface SnackBarOpenCall {
   message: string;

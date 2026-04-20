@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import type { RuntimeConfig } from './models/runtime-config';
-import { RuntimeConfigService } from './runtime-config';
+import { RuntimeConfigService } from './runtime-config.service';
 import { RUNTIME_CONFIG_DEFAULT, RUNTIME_CONFIG_URL } from './tokens/runtime-config';
 
 describe('RuntimeConfigService', () => {

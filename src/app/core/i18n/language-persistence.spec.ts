@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslocoService, TranslocoTestingModule } from '@jsverse/transloco';
-import { LoggingService } from '../logging/logging';
+import { LoggingService } from '../logging/logging.service';
 import { STORAGE_KEYS } from '../storage/models/storage-schema';
-import { StorageService } from '../storage/storage';
+import { StorageService } from '../storage/storage.service';
 import { APP_AVAILABLE_LANGUAGE_CODES, APP_DEFAULT_LANGUAGE } from './language-options';
 import { LanguagePersistenceService } from './language-persistence';
 

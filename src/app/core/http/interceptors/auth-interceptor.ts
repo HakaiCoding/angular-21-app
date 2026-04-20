@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { API_CONFIG } from '../tokens/api-config';
 import { AuthToken } from '../../services/auth-token';
 import { isApiRequest } from './is-api-request';
-import { LoggingService } from '../../logging/logging';
+import { LoggingService } from '../../logging/logging.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authToken = inject(AuthToken);

@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { ApiClient } from '../../../core/http/api-client';
-import type { Post, PostComment } from './models/post';
+import type { Post } from './models/post.model';
+import type { PostComment } from './models/post-comment.model';
 import { PostsApi } from './posts-api';
 
 describe('PostsApi', () => {

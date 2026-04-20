@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { retry, throwError, timer, TimeoutError, timeout } from 'rxjs';
 import { API_CONFIG } from '../tokens/api-config';
 import { isApiRequest } from './is-api-request';
-import { LoggingService } from '../../logging/logging';
+import { LoggingService } from '../../logging/logging.service';
 
 const IDEMPOTENT_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 const RETRYABLE_STATUS_CODES = new Set([0, 408, 429, 500, 502, 503, 504]);

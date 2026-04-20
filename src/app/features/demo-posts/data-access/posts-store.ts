@@ -1,13 +1,16 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { take } from 'rxjs';
-import type { Post, PostComment, PostListQuery } from './models/post';
+import { type ApiError, toApiError } from '../../../core/http/models/api-error';
+import type { Post } from './models/post.model';
+import type { PostComment } from './models/post-comment.model';
+import type { PostListQuery } from './models/post-list-query.model';
 import { PostsApi } from './posts-api';
 
-export type RequestState<TData> =
+export type RequestState<TData, TError = ApiError> =
   | { status: 'idle' }
   | { status: 'loading' }
   | { status: 'success'; data: TData }
-  | { status: 'error'; error: unknown };
+  | { status: 'error'; error: TError };
 
 const idleState: RequestState<readonly Post[]> = { status: 'idle' };
 const idlePostState: RequestState<Post> = { status: 'idle' };
@@ -59,7 +62,7 @@ export class PostsStore {
         this.postListState.set({ status: 'success', data: posts });
       },
       error: (error: unknown) => {
-        this.postListState.set({ status: 'error', error });
+        this.postListState.set({ status: 'error', error: toApiError(error) });
       },
     });
   }
@@ -89,7 +92,7 @@ export class PostsStore {
         this.postState.set({ status: 'success', data: post });
       },
       error: (error: unknown) => {
-        this.postState.set({ status: 'error', error });
+        this.postState.set({ status: 'error', error: toApiError(error) });
       },
     });
   }
@@ -102,7 +105,7 @@ export class PostsStore {
         this.commentListState.set({ status: 'success', data: comments });
       },
       error: (error: unknown) => {
-        this.commentListState.set({ status: 'error', error });
+        this.commentListState.set({ status: 'error', error: toApiError(error) });
       },
     });
   }

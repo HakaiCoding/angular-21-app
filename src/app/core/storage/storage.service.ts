@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { LoggingService } from '../logging/logging';
+import { LoggingService } from '../logging/logging.service';
 import type { AppStorageSchema } from './models/storage-schema';
 import { BROWSER_STORAGE } from './tokens/browser-storage';
 

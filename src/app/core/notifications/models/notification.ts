@@ -32,8 +32,6 @@ export interface NotificationInput extends NotificationBaseOptions {
   content: NotificationContent;
 }
 
-export type NotificationTextOptions = NotificationBaseOptions;
-
 export interface NotificationKeyOptions extends NotificationBaseOptions {
   params?: NotificationParams;
   fallbackText?: string;

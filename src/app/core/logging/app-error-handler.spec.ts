@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
 import { AppErrorHandler } from './app-error-handler';
-import { LoggingService } from './logging';
+import { LoggingService } from './logging.service';
 import type { LogContext } from './models/logging-config';
-import { NotificationService } from '../notifications/notification';
+import { NotificationService } from '../notifications/notification.service';
 
 describe('AppErrorHandler', () => {
   let handler: AppErrorHandler;
@@ -98,8 +98,8 @@ describe('AppErrorHandler', () => {
   it('does not notify users for ApiError instances', () => {
     handler.handleError({
       kind: 'network',
-      i18nKey: 'errors.network',
       retryable: true,
+      status: 0,
     });
 
     expect(logCalls.length).toBe(1);

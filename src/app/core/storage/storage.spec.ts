@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { LoggingService } from '../logging/logging';
+import { LoggingService } from '../logging/logging.service';
 import { STORAGE_KEYS } from './models/storage-schema';
-import { StorageService } from './storage';
+import { StorageService } from './storage.service';
 import { BROWSER_STORAGE } from './tokens/browser-storage';
 
 class BrowserStorageStub implements Storage {

@@ -1,9 +1,9 @@
 import { ErrorHandler, Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { isApiError } from '../http/models/api-error';
-import { NotificationService } from '../notifications/notification';
+import { NotificationService } from '../notifications/notification.service';
 import type { LogContext } from './models/logging-config';
-import { LoggingService } from './logging';
+import { LoggingService } from './logging.service';
 
 type ObjectLike = Record<string, unknown>;
 

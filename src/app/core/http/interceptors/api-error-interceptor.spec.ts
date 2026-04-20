@@ -1,8 +1,8 @@
 import { HttpClient, HttpContext, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { LoggingService } from '../../logging/logging';
-import { NotificationService } from '../../notifications/notification';
+import { LoggingService } from '../../logging/logging.service';
+import { NotificationService } from '../../notifications/notification.service';
 import { API_CONFIG } from '../tokens/api-config';
 import { SKIP_GLOBAL_ERROR_LOG, SKIP_GLOBAL_ERROR_TOAST } from '../tokens/request-policy';
 import { apiErrorInterceptor } from './api-error-interceptor';

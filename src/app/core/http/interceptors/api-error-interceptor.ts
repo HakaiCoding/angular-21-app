@@ -8,11 +8,21 @@ import { catchError, throwError, TimeoutError } from 'rxjs';
 import type { ApiError } from '../models/api-error';
 import { API_CONFIG } from '../tokens/api-config';
 import { isApiRequest } from './is-api-request';
-import { LoggingService } from '../../logging/logging';
-import { NotificationService } from '../../notifications/notification';
+import { LoggingService } from '../../logging/logging.service';
+import { NotificationService } from '../../notifications/notification.service';
+import type { TranslationKey } from '../../i18n/types';
 import { SKIP_GLOBAL_ERROR_LOG, SKIP_GLOBAL_ERROR_TOAST } from '../tokens/request-policy';
 
 const RETRYABLE_STATUS_CODES = new Set([0, 408, 429, 500, 502, 503, 504]);
+const API_ERROR_MESSAGE_KEYS: Record<ApiError['kind'], TranslationKey> = {
+  timeout: 'errors.timeout',
+  network: 'errors.network',
+  http: 'errors.http',
+  unknown: 'errors.unknown',
+};
+
+const toApiErrorMessageKey = (error: ApiError): TranslationKey =>
+  API_ERROR_MESSAGE_KEYS[error.kind];
 
 const getHttpErrorMessage = (error: HttpErrorResponse): string | undefined => {
   const errorPayload = error.error;
@@ -36,7 +46,6 @@ const mapToApiError = (error: unknown, req: HttpRequest<unknown>): ApiError => {
   if (error instanceof TimeoutError) {
     return {
       kind: 'timeout',
-      i18nKey: 'errors.timeout',
       retryable: true,
       url: req.urlWithParams,
     };
@@ -46,7 +55,6 @@ const mapToApiError = (error: unknown, req: HttpRequest<unknown>): ApiError => {
     if (error.status === 0) {
       return {
         kind: 'network',
-        i18nKey: 'errors.network',
         retryable: true,
         status: error.status,
         url: req.urlWithParams,
@@ -55,7 +63,6 @@ const mapToApiError = (error: unknown, req: HttpRequest<unknown>): ApiError => {
 
     return {
       kind: 'http',
-      i18nKey: 'errors.http',
       message: getHttpErrorMessage(error),
       retryable: RETRYABLE_STATUS_CODES.has(error.status),
       status: error.status,
@@ -65,7 +72,6 @@ const mapToApiError = (error: unknown, req: HttpRequest<unknown>): ApiError => {
 
   return {
     kind: 'unknown',
-    i18nKey: 'errors.unknown',
     retryable: false,
     url: req.urlWithParams,
   };
@@ -83,15 +89,19 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: unknown) => {
       const apiError = mapToApiError(error, req);
+      const messageKey = toApiErrorMessageKey(apiError);
+      const errorStatus = apiError.kind === 'http' || apiError.kind === 'network'
+        ? apiError.status
+        : undefined;
       const context = {
         feature: 'http',
         interceptor: 'apiErrorInterceptor',
         method: req.method,
         url: req.urlWithParams,
         kind: apiError.kind,
-        i18nKey: apiError.i18nKey,
+        messageKey,
         retryable: apiError.retryable,
-        status: apiError.status,
+        status: errorStatus,
       };
 
       if (!req.context.get(SKIP_GLOBAL_ERROR_LOG)) {
@@ -106,25 +116,25 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
         return throwError(() => apiError);
       }
 
-      const dedupeKey = `api:${apiError.kind}:${apiError.status ?? 'none'}:${req.method}:${req.url}`;
+      const dedupeKey = `api:${apiError.kind}:${errorStatus ?? 'none'}:${req.method}:${req.url}`;
       if (apiError.kind === 'http' && apiError.message) {
         notifications.show({
           level: apiError.retryable ? 'warn' : 'error',
           content: {
             kind: 'key',
-            key: apiError.i18nKey,
+            key: messageKey,
             fallbackText: apiError.message,
           },
           dedupeKey,
           context,
         });
       } else if (apiError.retryable) {
-        notifications.warnKey(apiError.i18nKey, {
+        notifications.warnKey(messageKey, {
           dedupeKey,
           context,
         });
       } else {
-        notifications.errorKey(apiError.i18nKey, {
+        notifications.errorKey(messageKey, {
           dedupeKey,
           context,
         });
