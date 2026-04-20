@@ -10,6 +10,19 @@
       "demoPosts": "Posts de demo"
     }
   },
+  "common": {
+    "states": {
+      "loading": {
+        "title": "Chargement..."
+      },
+      "error": {
+        "title": "Une erreur est survenue."
+      },
+      "empty": {
+        "title": "Aucune donnee disponible."
+      }
+    }
+  },
   "errors": {
     "network": "Erreur reseau. Veuillez verifier votre connexion.",
     "timeout": "La requete a expire.",

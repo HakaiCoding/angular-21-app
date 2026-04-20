@@ -10,6 +10,19 @@
       "demoPosts": "Demo-Posts"
     }
   },
+  "common": {
+    "states": {
+      "loading": {
+        "title": "Wird geladen..."
+      },
+      "error": {
+        "title": "Ein Fehler ist aufgetreten."
+      },
+      "empty": {
+        "title": "Keine Daten verfuegbar."
+      }
+    }
+  },
   "errors": {
     "network": "Netzwerkfehler. Bitte pruefen Sie Ihre Verbindung.",
     "timeout": "Die Anfrage hat ein Zeitlimit ueberschritten.",

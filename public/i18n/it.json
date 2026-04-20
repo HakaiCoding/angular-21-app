@@ -10,6 +10,19 @@
       "demoPosts": "Post demo"
     }
   },
+  "common": {
+    "states": {
+      "loading": {
+        "title": "Caricamento..."
+      },
+      "error": {
+        "title": "Si e verificato un errore."
+      },
+      "empty": {
+        "title": "Nessun dato disponibile."
+      }
+    }
+  },
   "errors": {
     "network": "Errore di rete. Controlla la connessione.",
     "timeout": "La richiesta ha superato il tempo limite.",

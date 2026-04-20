@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.state {
+  align-items: center;
+  border: 1px dashed var(--mat-sys-outline);
+  border-radius: .75rem;
+  display: grid;
+  gap: .5rem;
+  justify-items: center;
+  padding: 1rem;
+  text-align: center;
+}
+
+.state.state-page {
+  min-height: 40vh;
+  place-content: center;
+}
+
+mat-icon {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.state-title,
+.state-description {
+  margin: 0;
+}
+
+.state-description {
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-body-medium);
+}

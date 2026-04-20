@@ -6,8 +6,11 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { EmptyStateComponent } from '../../../../shared/ui/states/empty-state/empty-state';
+import { ErrorStateComponent } from '../../../../shared/ui/states/error-state/error-state';
+import { LoadingStateComponent } from '../../../../shared/ui/states/loading-state/loading-state';
+import type { StateAction, UiCopy } from '../../../../shared/ui/state/types';
 import { PostsStore } from '../../data-access/posts-store';
 
 @Component({
@@ -15,8 +18,10 @@ import { PostsStore } from '../../data-access/posts-store';
   imports: [
     MatButtonModule,
     MatCardModule,
-    MatProgressSpinnerModule,
     TranslocoDirective,
+    LoadingStateComponent,
+    ErrorStateComponent,
+    EmptyStateComponent,
   ],
   templateUrl: './demo-posts-page.html',
   styleUrl: './demo-posts-page.scss',
@@ -24,6 +29,61 @@ import { PostsStore } from '../../data-access/posts-store';
 })
 export class DemoPostsPage implements OnInit {
   private readonly postsStore = inject(PostsStore);
+  readonly retryStateAction: StateAction = {
+    id: 'retry',
+    label: { kind: 'key', key: 'demoPosts.actions.tryAgain' },
+    variant: 'outlined',
+  };
+
+  readonly loadingPostsCopy: UiCopy = {
+    kind: 'key',
+    key: 'demoPosts.states.loadingPosts',
+  };
+
+  readonly loadingSelectedPostCopy: UiCopy = {
+    kind: 'key',
+    key: 'demoPosts.states.loadingSelectedPost',
+  };
+
+  readonly loadingCommentsCopy: UiCopy = {
+    kind: 'key',
+    key: 'demoPosts.states.loadingComments',
+  };
+
+  readonly errorPostsCopy: UiCopy = {
+    kind: 'key',
+    key: 'demoPosts.states.errorPosts',
+  };
+
+  readonly errorSelectedPostCopy: UiCopy = {
+    kind: 'key',
+    key: 'demoPosts.states.errorSelectedPost',
+  };
+
+  readonly errorCommentsCopy: UiCopy = {
+    kind: 'key',
+    key: 'demoPosts.states.errorComments',
+  };
+
+  readonly emptyPostsCopy: UiCopy = {
+    kind: 'key',
+    key: 'demoPosts.states.emptyPosts',
+  };
+
+  readonly selectPostCopy: UiCopy = {
+    kind: 'key',
+    key: 'demoPosts.states.selectPost',
+  };
+
+  readonly selectPostForCommentsCopy: UiCopy = {
+    kind: 'key',
+    key: 'demoPosts.states.selectPostForComments',
+  };
+
+  readonly emptyCommentsCopy: UiCopy = {
+    kind: 'key',
+    key: 'demoPosts.states.emptyComments',
+  };
 
   readonly posts = this.postsStore.posts;
   readonly selectedPost = this.postsStore.selectedPost;
@@ -55,5 +115,25 @@ export class DemoPostsPage implements OnInit {
 
   clearSelection(): void {
     this.postsStore.clearSelection();
+  }
+
+  onListErrorAction(actionId: string): void {
+    if (actionId === this.retryStateAction.id) {
+      this.reloadPosts();
+    }
+  }
+
+  onSelectedPostErrorAction(actionId: string): void {
+    const selectedPostId = this.selectedPostId();
+    if (actionId === this.retryStateAction.id && selectedPostId !== null) {
+      this.selectPost(selectedPostId);
+    }
+  }
+
+  onCommentErrorAction(actionId: string): void {
+    const selectedPostId = this.selectedPostId();
+    if (actionId === this.retryStateAction.id && selectedPostId !== null) {
+      this.selectPost(selectedPostId);
+    }
   }
 }

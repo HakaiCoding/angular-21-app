@@ -12,19 +12,15 @@
       <h2>{{ t('demoPosts.sections.posts') }}</h2>
 
       @if (isListLoading()) {
-        <div class="state-block">
-          <mat-spinner diameter="28" />
-          <span>{{ t('demoPosts.states.loadingPosts') }}</span>
-        </div>
+        <app-loading-state [title]="loadingPostsCopy" />
       } @else if (hasListError()) {
-        <div class="state-block">
-          <p>{{ t('demoPosts.states.errorPosts') }}</p>
-          <button matButton="outlined" type="button" (click)="reloadPosts()">
-            {{ t('demoPosts.actions.tryAgain') }}
-          </button>
-        </div>
+        <app-error-state
+          [title]="errorPostsCopy"
+          [action]="retryStateAction"
+          (actionTriggered)="onListErrorAction($event)"
+        />
       } @else if (posts().length === 0) {
-        <p>{{ t('demoPosts.states.emptyPosts') }}</p>
+        <app-empty-state [title]="emptyPostsCopy" />
       } @else {
         <ul class="post-list">
           @for (post of posts(); track post.id) {
@@ -49,14 +45,15 @@
       <h2>{{ t('demoPosts.sections.selectedPost') }}</h2>
 
       @if (selectedPostId() === null) {
-        <p>{{ t('demoPosts.states.selectPost') }}</p>
+        <app-empty-state [title]="selectPostCopy" />
       } @else if (isSelectedPostLoading()) {
-        <div class="state-block">
-          <mat-spinner diameter="28" />
-          <span>{{ t('demoPosts.states.loadingSelectedPost') }}</span>
-        </div>
+        <app-loading-state [title]="loadingSelectedPostCopy" />
       } @else if (hasSelectedPostError()) {
-        <p>{{ t('demoPosts.states.errorSelectedPost') }}</p>
+        <app-error-state
+          [title]="errorSelectedPostCopy"
+          [action]="retryStateAction"
+          (actionTriggered)="onSelectedPostErrorAction($event)"
+        />
       } @else if (selectedPost(); as post) {
         <article class="post-details">
           <p class="meta">
@@ -77,16 +74,17 @@
       <h2>{{ t('demoPosts.sections.comments') }}</h2>
 
       @if (selectedPostId() === null) {
-        <p>{{ t('demoPosts.states.selectPostForComments') }}</p>
+        <app-empty-state [title]="selectPostForCommentsCopy" />
       } @else if (isCommentListLoading()) {
-        <div class="state-block">
-          <mat-spinner diameter="28" />
-          <span>{{ t('demoPosts.states.loadingComments') }}</span>
-        </div>
+        <app-loading-state [title]="loadingCommentsCopy" />
       } @else if (hasCommentListError()) {
-        <p>{{ t('demoPosts.states.errorComments') }}</p>
+        <app-error-state
+          [title]="errorCommentsCopy"
+          [action]="retryStateAction"
+          (actionTriggered)="onCommentErrorAction($event)"
+        />
       } @else if (comments().length === 0) {
-        <p>{{ t('demoPosts.states.emptyComments') }}</p>
+        <app-empty-state [title]="emptyCommentsCopy" />
       } @else {
         <ul class="comment-list">
           @for (comment of comments(); track comment.id) {

@@ -10,6 +10,19 @@
       "demoPosts": "Posts de demo"
     }
   },
+  "common": {
+    "states": {
+      "loading": {
+        "title": "Cargando..."
+      },
+      "error": {
+        "title": "Algo salio mal."
+      },
+      "empty": {
+        "title": "No hay datos disponibles."
+      }
+    }
+  },
   "errors": {
     "network": "Error de red. Comprueba tu conexion.",
     "timeout": "La solicitud excedio el tiempo de espera.",

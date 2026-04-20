@@ -1,0 +1,16 @@
+<section class="state" [class.state-page]="mode() === 'page'" role="alert">
+  <mat-icon aria-hidden="true">error_outline</mat-icon>
+  <h3 class="state-title">{{ titleText() }}</h3>
+  @if (descriptionText(); as description) {
+    <p class="state-description">{{ description }}</p>
+  }
+  @if (actionLabelText(); as actionLabel) {
+    <button
+      [matButton]="actionVariant()"
+      type="button"
+      (click)="triggerAction()"
+    >
+      {{ actionLabel }}
+    </button>
+  }
+</section>

@@ -1,0 +1,12 @@
+<section
+  class="state"
+  [class.state-page]="mode() === 'page'"
+  role="status"
+  aria-live="polite"
+>
+  <mat-spinner [diameter]="spinnerDiameter()" />
+  <h3 class="state-title">{{ titleText() }}</h3>
+  @if (descriptionText(); as description) {
+    <p class="state-description">{{ description }}</p>
+  }
+</section>
