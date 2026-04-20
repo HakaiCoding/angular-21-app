@@ -2,8 +2,183 @@ import { Injectable, inject, signal } from '@angular/core';
 import type { RuntimeConfig, RuntimeConfigOverride } from './models/runtime-config';
 import { RUNTIME_CONFIG_DEFAULT, RUNTIME_CONFIG_URL } from './tokens/runtime-config';
 
-const isObject = (value: unknown): value is Record<string, unknown> =>
-  typeof value === 'object' && value !== null;
+type NotificationOverride = NonNullable<RuntimeConfigOverride['notifications']>;
+
+const LOG_LEVELS = ['debug', 'info', 'warn', 'error', 'off'] as const;
+const NOTIFICATION_LEVELS = ['success', 'info', 'warn', 'error'] as const;
+const NOTIFICATION_HORIZONTAL_POSITIONS = ['start', 'center', 'end', 'left', 'right'] as const;
+const NOTIFICATION_VERTICAL_POSITIONS = ['top', 'bottom'] as const;
+const NOTIFICATION_POLITENESS_VALUES = ['off', 'polite', 'assertive'] as const;
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+const hasEntries = (value: object): boolean => Object.keys(value).length > 0;
+
+const isString = (value: unknown): value is string => typeof value === 'string';
+const isBoolean = (value: unknown): value is boolean => typeof value === 'boolean';
+
+const isOneOf = <T extends readonly string[]>(
+  value: unknown,
+  allowed: T,
+): value is T[number] => isString(value) && allowed.includes(value);
+
+const isNonEmptyString = (value: unknown): value is string =>
+  isString(value) && value.trim().length > 0;
+
+const isNonNegativeInteger = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isInteger(value) && value >= 0;
+
+const isPositiveInteger = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isInteger(value) && value > 0;
+
+const toStringArray = (value: unknown): readonly string[] | null => {
+  if (!Array.isArray(value) || !value.every((entry) => isString(entry))) {
+    return null;
+  }
+
+  return value;
+};
+
+const parseApiOverride = (value: unknown): RuntimeConfigOverride['api'] | undefined => {
+  const record = isRecord(value) ? value : null;
+  if (!record) {
+    return undefined;
+  }
+
+  const api: NonNullable<RuntimeConfigOverride['api']> = {};
+  if (isNonEmptyString(record['baseUrl'])) {
+    api.baseUrl = record['baseUrl'];
+  }
+
+  if (isPositiveInteger(record['requestTimeoutMs'])) {
+    api.requestTimeoutMs = record['requestTimeoutMs'];
+  }
+
+  if (isNonNegativeInteger(record['retryCount'])) {
+    api.retryCount = record['retryCount'];
+  }
+
+  if (isNonNegativeInteger(record['retryDelayMs'])) {
+    api.retryDelayMs = record['retryDelayMs'];
+  }
+
+  if (isBoolean(record['enableAuthHeader'])) {
+    api.enableAuthHeader = record['enableAuthHeader'];
+  }
+
+  return hasEntries(api) ? api : undefined;
+};
+
+const parseLoggingOverride = (value: unknown): RuntimeConfigOverride['logging'] | undefined => {
+  const record = isRecord(value) ? value : null;
+  if (!record) {
+    return undefined;
+  }
+
+  const level = record['level'];
+  if (!isOneOf(level, LOG_LEVELS)) {
+    return undefined;
+  }
+
+  return { level };
+};
+
+const parseDurationByLevel = (value: unknown): NotificationOverride['durationByLevel'] | undefined => {
+  const record = isRecord(value) ? value : null;
+  if (!record) {
+    return undefined;
+  }
+
+  const durations: NonNullable<NotificationOverride['durationByLevel']> = {};
+  for (const level of NOTIFICATION_LEVELS) {
+    const candidate = record[level];
+    if (isPositiveInteger(candidate)) {
+      durations[level] = candidate;
+    }
+  }
+
+  return hasEntries(durations) ? durations : undefined;
+};
+
+const parsePolitenessByLevel = (
+  value: unknown,
+): NotificationOverride['politenessByLevel'] | undefined => {
+  const record = isRecord(value) ? value : null;
+  if (!record) {
+    return undefined;
+  }
+
+  const politenessByLevel: NonNullable<NotificationOverride['politenessByLevel']> = {};
+  for (const level of NOTIFICATION_LEVELS) {
+    const candidate = record[level];
+    if (isOneOf(candidate, NOTIFICATION_POLITENESS_VALUES)) {
+      politenessByLevel[level] = candidate;
+    }
+  }
+
+  return hasEntries(politenessByLevel) ? politenessByLevel : undefined;
+};
+
+const parsePanelClassByLevel = (
+  value: unknown,
+): NotificationOverride['panelClassByLevel'] | undefined => {
+  const record = isRecord(value) ? value : null;
+  if (!record) {
+    return undefined;
+  }
+
+  const panelClassByLevel: NonNullable<NotificationOverride['panelClassByLevel']> = {};
+  for (const level of NOTIFICATION_LEVELS) {
+    const candidate = toStringArray(record[level]);
+    if (candidate) {
+      panelClassByLevel[level] = candidate;
+    }
+  }
+
+  return hasEntries(panelClassByLevel) ? panelClassByLevel : undefined;
+};
+
+const parseNotificationsOverride = (
+  value: unknown,
+): RuntimeConfigOverride['notifications'] | undefined => {
+  const record = isRecord(value) ? value : null;
+  if (!record) {
+    return undefined;
+  }
+
+  const notifications: NotificationOverride = {};
+  const durationByLevel = parseDurationByLevel(record['durationByLevel']);
+  if (durationByLevel) {
+    notifications.durationByLevel = durationByLevel;
+  }
+
+  const horizontalPosition = record['horizontalPosition'];
+  if (isOneOf(horizontalPosition, NOTIFICATION_HORIZONTAL_POSITIONS)) {
+    notifications.horizontalPosition = horizontalPosition;
+  }
+
+  const verticalPosition = record['verticalPosition'];
+  if (isOneOf(verticalPosition, NOTIFICATION_VERTICAL_POSITIONS)) {
+    notifications.verticalPosition = verticalPosition;
+  }
+
+  const politenessByLevel = parsePolitenessByLevel(record['politenessByLevel']);
+  if (politenessByLevel) {
+    notifications.politenessByLevel = politenessByLevel;
+  }
+
+  const panelClassByLevel = parsePanelClassByLevel(record['panelClassByLevel']);
+  if (panelClassByLevel) {
+    notifications.panelClassByLevel = panelClassByLevel;
+  }
+
+  if (isPositiveInteger(record['persistWithoutActionDurationMs'])) {
+    notifications.persistWithoutActionDurationMs = record['persistWithoutActionDurationMs'];
+  }
+
+  return hasEntries(notifications) ? notifications : undefined;
+};
 
 const mergeRuntimeConfig = (
   defaults: RuntimeConfig,
@@ -36,11 +211,28 @@ const mergeRuntimeConfig = (
 });
 
 const parseRuntimeConfig = (value: unknown): RuntimeConfigOverride | null => {
-  if (!isObject(value)) {
+  const record = isRecord(value) ? value : null;
+  if (!record) {
     return null;
   }
 
-  return value as RuntimeConfigOverride;
+  const override: RuntimeConfigOverride = {};
+  const api = parseApiOverride(record['api']);
+  if (api) {
+    override.api = api;
+  }
+
+  const logging = parseLoggingOverride(record['logging']);
+  if (logging) {
+    override.logging = logging;
+  }
+
+  const notifications = parseNotificationsOverride(record['notifications']);
+  if (notifications) {
+    override.notifications = notifications;
+  }
+
+  return hasEntries(override) ? override : null;
 };
 
 @Injectable({

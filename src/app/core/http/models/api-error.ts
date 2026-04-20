@@ -1,8 +1,10 @@
+import type { TranslationKey } from '../../i18n/types';
+
 export type ApiErrorKind = 'network' | 'timeout' | 'http' | 'unknown';
 
 export interface ApiError {
   kind: ApiErrorKind;
-  i18nKey: string;
+  i18nKey: TranslationKey;
   message?: string;
   retryable: boolean;
   status?: number;

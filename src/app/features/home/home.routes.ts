@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import type { Routes } from '@angular/router';
 import { provideTranslocoScope } from '@jsverse/transloco';
 
 export const HOME_ROUTES: Routes = [

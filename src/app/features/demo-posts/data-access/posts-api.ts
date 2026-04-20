@@ -1,15 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ApiClient } from '../../../core/http/api-client';
 import type { QueryParams, QueryValue } from '../../../core/http/models/api-request';
 import {
   Post,
   PostComment,
-  PostCommentDto,
-  PostDto,
   PostListQuery,
-  toPost,
-  toPostComment,
 } from './models/post';
 
 const toPostListQueryParams = (query: PostListQuery): QueryParams => {
@@ -33,18 +29,16 @@ export class PostsApi {
   private readonly api = inject(ApiClient);
 
   list(query: PostListQuery = {}): Observable<readonly Post[]> {
-    return this.api
-      .get<readonly PostDto[]>('/posts', { params: toPostListQueryParams(query) })
-      .pipe(map((posts) => posts.map(toPost)));
+    return this.api.get<readonly Post[]>('/posts', {
+      params: toPostListQueryParams(query),
+    });
   }
 
   getById(postId: number): Observable<Post> {
-    return this.api.get<PostDto>(`/posts/${postId}`).pipe(map(toPost));
+    return this.api.get<Post>(`/posts/${postId}`);
   }
 
   listComments(postId: number): Observable<readonly PostComment[]> {
-    return this.api
-      .get<readonly PostCommentDto[]>(`/posts/${postId}/comments`)
-      .pipe(map((comments) => comments.map(toPostComment)));
+    return this.api.get<readonly PostComment[]>(`/posts/${postId}/comments`);
   }
 }

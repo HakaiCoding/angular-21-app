@@ -113,7 +113,7 @@ describe('NotificationService', () => {
   });
 
   it('shows translated messages from translation keys', () => {
-    service.warn('errors.timeout', { isMessageKey: true, actionKey: 'common.retry' });
+    service.warnKey('errors.timeout', { actionKey: 'common.retry' });
     TestBed.flushEffects();
 
     expect(snackBar.openCalls.length).toBe(1);
@@ -132,8 +132,11 @@ describe('NotificationService', () => {
   it('falls back to message when translation key is missing', () => {
     service.show({
       level: 'error',
-      messageKey: 'errors.dynamic',
-      message: 'Backend returned an error',
+      content: {
+        kind: 'key',
+        key: 'errors.dynamic',
+        fallbackText: 'Backend returned an error',
+      },
     });
     TestBed.flushEffects();
 
@@ -142,8 +145,8 @@ describe('NotificationService', () => {
   });
 
   it('dedupes notifications with the same dedupe key', () => {
-    service.error('errors.timeout', { isMessageKey: true, dedupeKey: 'timeout:home', persist: true });
-    service.error('errors.timeout', { isMessageKey: true, dedupeKey: 'timeout:home', persist: true });
+    service.errorKey('errors.timeout', { dedupeKey: 'timeout:home', persist: true });
+    service.errorKey('errors.timeout', { dedupeKey: 'timeout:home', persist: true });
     TestBed.flushEffects();
 
     expect(snackBar.openCalls.length).toBe(1);
@@ -151,7 +154,7 @@ describe('NotificationService', () => {
   });
 
   it('processes the queue after active snackbar is dismissed', () => {
-    service.info('errors.timeout', { isMessageKey: true, persist: true, actionKey: 'common.retry' });
+    service.infoKey('errors.timeout', { persist: true, actionKey: 'common.retry' });
     service.success('Saved successfully');
     TestBed.flushEffects();
 
@@ -166,7 +169,7 @@ describe('NotificationService', () => {
   });
 
   it('applies fallback duration when persist is true without action', () => {
-    service.error('errors.timeout', { isMessageKey: true, persist: true });
+    service.errorKey('errors.timeout', { persist: true });
     TestBed.flushEffects();
 
     expect(snackBar.openCalls.length).toBe(1);

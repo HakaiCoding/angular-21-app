@@ -1,11 +1,11 @@
-import { Environment } from './environment.model';
-import { DEFAULT_API_CONFIG, DEFAULT_NOTIFICATION_CONFIG } from './environment.defaults';
+import { DEFAULT_RUNTIME_CONFIG } from '../app/core/config/models/runtime-config';
+import type { Environment } from './environment.model';
 
 export const environment: Environment = {
+  ...DEFAULT_RUNTIME_CONFIG,
   production: false,
-  api: DEFAULT_API_CONFIG,
   logging: {
+    ...DEFAULT_RUNTIME_CONFIG.logging,
     level: 'debug',
   },
-  notifications: DEFAULT_NOTIFICATION_CONFIG,
 };

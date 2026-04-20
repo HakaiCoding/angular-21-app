@@ -1,25 +1,40 @@
+import type { TranslationKey } from '../../i18n/types';
+
 export type NotificationLevel = 'success' | 'info' | 'warn' | 'error';
 
-export interface NotificationInput {
-  level: NotificationLevel;
-  messageKey?: string;
-  params?: Record<string, unknown>;
-  message?: string;
-  actionKey?: string;
-  actionParams?: Record<string, unknown>;
+export type NotificationParams = Readonly<Record<string, unknown>>;
+
+export interface NotificationBaseOptions {
+  actionKey?: TranslationKey;
+  actionParams?: NotificationParams;
   durationMs?: number;
   persist?: boolean;
   dedupeKey?: string;
-  context?: Record<string, unknown>;
+  context?: NotificationParams;
 }
 
-export interface NotificationOptions {
-  isMessageKey?: boolean;
-  params?: Record<string, unknown>;
-  actionKey?: string;
-  actionParams?: Record<string, unknown>;
-  durationMs?: number;
-  persist?: boolean;
-  dedupeKey?: string;
-  context?: Record<string, unknown>;
+export interface NotificationTextContent {
+  kind: 'text';
+  text: string;
+}
+
+export interface NotificationKeyContent {
+  kind: 'key';
+  key: TranslationKey;
+  params?: NotificationParams;
+  fallbackText?: string;
+}
+
+export type NotificationContent = NotificationTextContent | NotificationKeyContent;
+
+export interface NotificationInput extends NotificationBaseOptions {
+  level: NotificationLevel;
+  content: NotificationContent;
+}
+
+export type NotificationTextOptions = NotificationBaseOptions;
+
+export interface NotificationKeyOptions extends NotificationBaseOptions {
+  params?: NotificationParams;
+  fallbackText?: string;
 }

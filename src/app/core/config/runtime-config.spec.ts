@@ -116,4 +116,90 @@ describe('RuntimeConfigService', () => {
       },
     });
   });
+
+  it('ignores invalid runtime config payloads and keeps defaults', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(JSON.stringify('invalid'), { status: 200 }),
+    );
+
+    await service.load();
+
+    expect(service.config()).toEqual(defaults);
+    expect(warn).toHaveBeenCalledWith(
+      'Runtime config payload is invalid and will be ignored',
+      {
+        url: '/assets/app-config.json',
+      },
+    );
+  });
+
+  it('merges only valid runtime override fields', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          api: {
+            baseUrl: 'https://api.runtime.example.com',
+            requestTimeoutMs: 'slow',
+            retryCount: -1,
+            retryDelayMs: 700,
+            enableAuthHeader: true,
+          },
+          logging: {
+            level: 'trace',
+          },
+          notifications: {
+            durationByLevel: {
+              error: 9000,
+              warn: 'slow',
+            },
+            horizontalPosition: 'middle',
+            verticalPosition: 'bottom',
+            politenessByLevel: {
+              success: 'off',
+              info: 'loud',
+            },
+            panelClassByLevel: {
+              success: ['notif', 'notif-custom-success'],
+              warn: [42],
+            },
+            persistWithoutActionDurationMs: 12000,
+          },
+        }),
+        { status: 200 },
+      ),
+    );
+
+    await service.load();
+
+    expect(service.config()).toEqual({
+      ...defaults,
+      api: {
+        ...defaults.api,
+        baseUrl: 'https://api.runtime.example.com',
+        retryDelayMs: 700,
+        enableAuthHeader: true,
+      },
+      logging: {
+        ...defaults.logging,
+      },
+      notifications: {
+        ...defaults.notifications,
+        durationByLevel: {
+          ...defaults.notifications.durationByLevel,
+          error: 9000,
+        },
+        verticalPosition: 'bottom',
+        politenessByLevel: {
+          ...defaults.notifications.politenessByLevel,
+          success: 'off',
+        },
+        panelClassByLevel: {
+          ...defaults.notifications.panelClassByLevel,
+          success: ['notif', 'notif-custom-success'],
+        },
+        persistWithoutActionDurationMs: 12000,
+      },
+    });
+  });
 });

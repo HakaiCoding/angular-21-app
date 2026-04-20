@@ -4,7 +4,7 @@ import { TranslocoService } from '@jsverse/transloco';
 import { LoggingService } from '../logging/logging';
 import { STORAGE_KEYS } from '../storage/models/storage-schema';
 import { StorageService } from '../storage/storage';
-import { APP_AVAILABLE_LANGUAGE_CODES } from './language-options';
+import { APP_AVAILABLE_LANGUAGE_CODES, type AppLanguageCode } from './language-options';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class LanguagePersistenceService {
   private readonly documentRef = inject(DOCUMENT, { optional: true });
 
   private readonly initialized = signal(false);
-  private readonly supportedLanguages = new Set(APP_AVAILABLE_LANGUAGE_CODES);
+  private readonly supportedLanguages = new Set<string>(APP_AVAILABLE_LANGUAGE_CODES);
 
   private readonly persistActiveLanguage = effect(() => {
     if (!this.initialized()) {
@@ -64,7 +64,7 @@ export class LanguagePersistenceService {
     this.initialized.set(true);
   }
 
-  private isSupportedLanguage(language: string): boolean {
+  private isSupportedLanguage(language: string): language is AppLanguageCode {
     return this.supportedLanguages.has(language);
   }
 

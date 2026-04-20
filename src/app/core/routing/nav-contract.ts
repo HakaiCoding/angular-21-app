@@ -1,13 +1,14 @@
 import type { IsActiveMatchOptions } from '@angular/router';
-import {
-  APP_ROUTE_LINKS,
-  type AppRouteLinkKey,
-} from './route-contract';
+import type { TranslationKey } from '../i18n/types';
+import { APP_ROUTE_LINKS } from './route-contract';
+
+type AppRouteLinkKey = keyof typeof APP_ROUTE_LINKS;
+type AppRouteLink = (typeof APP_ROUTE_LINKS)[AppRouteLinkKey];
 
 export interface AppNavItem {
   id: AppRouteLinkKey;
-  link: (typeof APP_ROUTE_LINKS)[AppRouteLinkKey];
-  labelKey: string;
+  link: AppRouteLink;
+  labelKey: TranslationKey;
   activeMatchOptions: IsActiveMatchOptions | { exact: boolean };
 }
 

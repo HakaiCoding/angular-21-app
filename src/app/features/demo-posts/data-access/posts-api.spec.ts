@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { ApiClient } from '../../../core/http/api-client';
+import type { Post, PostComment } from './models/post';
 import { PostsApi } from './posts-api';
 
 describe('PostsApi', () => {
@@ -25,7 +26,7 @@ describe('PostsApi', () => {
     service = TestBed.inject(PostsApi);
   });
 
-  it('loads and maps posts with query params', () => {
+  it('loads posts with query params', () => {
     apiClient.get.mockReturnValue(
       of([
         {
@@ -37,7 +38,7 @@ describe('PostsApi', () => {
       ]),
     );
 
-    let result: readonly unknown[] = [];
+    let result: readonly Post[] = [];
     service.list({ userId: 7, limit: 5 }).subscribe((posts) => {
       result = posts;
     });
@@ -58,7 +59,7 @@ describe('PostsApi', () => {
     ]);
   });
 
-  it('loads and maps a single post by id', () => {
+  it('loads a single post by id', () => {
     apiClient.get.mockReturnValue(
       of({
         userId: 3,
@@ -68,7 +69,7 @@ describe('PostsApi', () => {
       }),
     );
 
-    let result: unknown;
+    let result: Post | null = null;
     service.getById(10).subscribe((post) => {
       result = post;
     });
@@ -82,7 +83,7 @@ describe('PostsApi', () => {
     });
   });
 
-  it('loads and maps post comments', () => {
+  it('loads post comments', () => {
     apiClient.get.mockReturnValue(
       of([
         {
@@ -95,7 +96,7 @@ describe('PostsApi', () => {
       ]),
     );
 
-    let result: readonly unknown[] = [];
+    let result: readonly PostComment[] = [];
     service.listComments(10).subscribe((comments) => {
       result = comments;
     });

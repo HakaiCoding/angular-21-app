@@ -39,8 +39,7 @@ export class AppErrorHandler implements ErrorHandler {
       return;
     }
 
-    this.notifications.error('runtime.unexpected', {
-      isMessageKey: true,
+    this.notifications.errorKey('runtime.unexpected', {
       dedupeKey: `runtime:unexpected:${this.router?.url ?? 'no-route'}`,
       context,
     });

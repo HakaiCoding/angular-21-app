@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError, TimeoutError } from 'rxjs';
-import { ApiError } from '../models/api-error';
+import type { ApiError } from '../models/api-error';
 import { API_CONFIG } from '../tokens/api-config';
 import { isApiRequest } from './is-api-request';
 import { LoggingService } from '../../logging/logging';
@@ -110,20 +110,21 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
       if (apiError.kind === 'http' && apiError.message) {
         notifications.show({
           level: apiError.retryable ? 'warn' : 'error',
-          messageKey: apiError.i18nKey,
-          message: apiError.message,
+          content: {
+            kind: 'key',
+            key: apiError.i18nKey,
+            fallbackText: apiError.message,
+          },
           dedupeKey,
           context,
         });
       } else if (apiError.retryable) {
-        notifications.warn(apiError.i18nKey, {
-          isMessageKey: true,
+        notifications.warnKey(apiError.i18nKey, {
           dedupeKey,
           context,
         });
       } else {
-        notifications.error(apiError.i18nKey, {
-          isMessageKey: true,
+        notifications.errorKey(apiError.i18nKey, {
           dedupeKey,
           context,
         });

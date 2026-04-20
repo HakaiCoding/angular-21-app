@@ -16,8 +16,8 @@ describe('apiErrorInterceptor', () => {
   };
   let notifications: {
     show: ReturnType<typeof vi.fn>;
-    warn: ReturnType<typeof vi.fn>;
-    error: ReturnType<typeof vi.fn>;
+    warnKey: ReturnType<typeof vi.fn>;
+    errorKey: ReturnType<typeof vi.fn>;
   };
 
   beforeEach(() => {
@@ -27,8 +27,8 @@ describe('apiErrorInterceptor', () => {
     };
     notifications = {
       show: vi.fn(),
-      warn: vi.fn(),
-      error: vi.fn(),
+      warnKey: vi.fn(),
+      errorKey: vi.fn(),
     };
 
     TestBed.configureTestingModule({
@@ -100,8 +100,8 @@ describe('apiErrorInterceptor', () => {
 
     expect(logger.warn).toHaveBeenCalledTimes(1);
     expect(notifications.show).not.toHaveBeenCalled();
-    expect(notifications.warn).not.toHaveBeenCalled();
-    expect(notifications.error).not.toHaveBeenCalled();
+    expect(notifications.warnKey).not.toHaveBeenCalled();
+    expect(notifications.errorKey).not.toHaveBeenCalled();
   });
 
   it('supports request-level opt-out for global error logging', () => {

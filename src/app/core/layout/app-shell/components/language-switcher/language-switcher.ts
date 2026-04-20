@@ -3,7 +3,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { APP_DEFAULT_LANGUAGE, APP_LANGUAGE_OPTIONS } from '../../../../i18n/language-options';
+import {
+  APP_DEFAULT_LANGUAGE,
+  APP_LANGUAGE_OPTIONS,
+  type AppLanguageCode,
+} from '../../../../i18n/language-options';
 
 @Component({
   selector: 'app-language-switcher',
@@ -35,7 +39,7 @@ export class LanguageSwitcher {
     return this.languages().find((language) => language.code === active) ?? APP_DEFAULT_LANGUAGE;
   });
 
-  setLanguage(code: string): void {
+  setLanguage(code: AppLanguageCode): void {
     if (code === this.activeLang()) {
       return;
     }

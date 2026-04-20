@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import type { Routes } from '@angular/router';
 import { provideTranslocoScope } from '@jsverse/transloco';
 import { AppShell } from './core/layout/app-shell/app-shell';
 import { APP_ROUTE_LINKS, APP_ROUTE_SEGMENTS } from './core/routing/route-contract';

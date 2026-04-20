@@ -2,12 +2,20 @@ import { effect, inject, Injectable, signal } from '@angular/core';
 import {
   MatSnackBar,
   MatSnackBarConfig,
-  TextOnlySnackBar,
 } from '@angular/material/snack-bar';
 import { TranslocoService } from '@jsverse/transloco';
 import { take } from 'rxjs';
-import type { NotificationInput, NotificationLevel, NotificationOptions } from './models/notification';
+import type { TranslationKey } from '../i18n/types';
+import type {
+  NotificationInput,
+  NotificationKeyContent,
+  NotificationKeyOptions,
+  NotificationLevel,
+  NotificationTextOptions,
+} from './models/notification';
 import { NOTIFICATION_CONFIG } from './tokens/notification-config';
+
+const toTranslationKey = (value: string): TranslationKey => value as TranslationKey;
 
 @Injectable({
   providedIn: 'root',
@@ -35,32 +43,49 @@ export class NotificationService {
     this.openNotification(next);
   });
 
-  success(keyOrText: string, options: NotificationOptions = {}): void {
-    this.show(this.buildInput('success', keyOrText, options));
+  success(text: string, options: NotificationTextOptions = {}): void {
+    this.show(this.buildTextInput('success', text, options));
   }
 
-  info(keyOrText: string, options: NotificationOptions = {}): void {
-    this.show(this.buildInput('info', keyOrText, options));
+  successKey(key: TranslationKey, options: NotificationKeyOptions = {}): void {
+    this.show(this.buildKeyInput('success', key, options));
   }
 
-  warn(keyOrText: string, options: NotificationOptions = {}): void {
-    this.show(this.buildInput('warn', keyOrText, options));
+  info(text: string, options: NotificationTextOptions = {}): void {
+    this.show(this.buildTextInput('info', text, options));
   }
 
-  error(keyOrText: string, options: NotificationOptions = {}): void {
-    this.show(this.buildInput('error', keyOrText, options));
+  infoKey(key: TranslationKey, options: NotificationKeyOptions = {}): void {
+    this.show(this.buildKeyInput('info', key, options));
+  }
+
+  warn(text: string, options: NotificationTextOptions = {}): void {
+    this.show(this.buildTextInput('warn', text, options));
+  }
+
+  warnKey(key: TranslationKey, options: NotificationKeyOptions = {}): void {
+    this.show(this.buildKeyInput('warn', key, options));
+  }
+
+  error(text: string, options: NotificationTextOptions = {}): void {
+    this.show(this.buildTextInput('error', text, options));
+  }
+
+  errorKey(key: TranslationKey, options: NotificationKeyOptions = {}): void {
+    this.show(this.buildKeyInput('error', key, options));
   }
 
   show(input: NotificationInput): void {
-    if (!input.messageKey && !input.message) {
+    const normalizedInput = this.normalizeInput(input);
+    if (!normalizedInput) {
       return;
     }
 
-    if (this.isDuplicate(input.dedupeKey)) {
+    if (this.isDuplicate(normalizedInput.dedupeKey)) {
       return;
     }
 
-    this.queue.update((items) => [...items, input]);
+    this.queue.update((items) => [...items, normalizedInput]);
   }
 
   dismiss(): void {
@@ -71,16 +96,75 @@ export class NotificationService {
     this.queue.set([]);
   }
 
-  private buildInput(
+  private buildTextInput(
     level: NotificationLevel,
-    keyOrText: string,
-    options: NotificationOptions,
+    text: string,
+    options: NotificationTextOptions,
   ): NotificationInput {
-    const { isMessageKey = false, ...rest } = options;
-    const trimmedValue = keyOrText.trim();
-    return isMessageKey
-      ? { level, messageKey: trimmedValue, ...rest }
-      : { level, message: trimmedValue, ...rest };
+    return {
+      ...options,
+      level,
+      content: {
+        kind: 'text',
+        text,
+      },
+    };
+  }
+
+  private buildKeyInput(
+    level: NotificationLevel,
+    key: TranslationKey,
+    options: NotificationKeyOptions,
+  ): NotificationInput {
+    const { params, fallbackText, ...rest } = options;
+    return {
+      ...rest,
+      level,
+      content: {
+        kind: 'key',
+        key,
+        params,
+        fallbackText,
+      },
+    };
+  }
+
+  private normalizeInput(input: NotificationInput): NotificationInput | null {
+    if (input.content.kind === 'text') {
+      const text = input.content.text.trim();
+      if (!text) {
+        return null;
+      }
+
+      return {
+        ...input,
+        content: {
+          kind: 'text',
+          text,
+        },
+      };
+    }
+
+    const key = input.content.key.trim();
+    if (!key) {
+      return null;
+    }
+
+    const content: NotificationKeyContent = {
+      kind: 'key',
+      key: toTranslationKey(key),
+      params: input.content.params,
+    };
+
+    const fallbackText = input.content.fallbackText?.trim();
+    if (fallbackText) {
+      content.fallbackText = fallbackText;
+    }
+
+    return {
+      ...input,
+      content,
+    };
   }
 
   private isDuplicate(dedupeKey: string | undefined): boolean {
@@ -127,14 +211,17 @@ export class NotificationService {
   }
 
   private resolveMessage(input: NotificationInput): string {
-    if (!input.messageKey) {
-      return input.message ?? '';
+    if (input.content.kind === 'text') {
+      return input.content.text;
     }
 
-    const translated = this.transloco.translate(input.messageKey, input.params ?? {});
-    const translationMissing = translated === input.messageKey;
-    if (translationMissing && input.message) {
-      return input.message;
+    const translated = this.transloco.translate(
+      input.content.key,
+      input.content.params ?? {},
+    );
+    const translationMissing = translated === input.content.key;
+    if (translationMissing && input.content.fallbackText) {
+      return input.content.fallbackText;
     }
 
     return translated;

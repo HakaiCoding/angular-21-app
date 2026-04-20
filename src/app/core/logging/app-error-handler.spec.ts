@@ -10,7 +10,7 @@ describe('AppErrorHandler', () => {
   let handler: AppErrorHandler;
   let logCalls: Array<{ message: string; context: LogContext }>;
   let notificationCalls: Array<{
-    message: string;
+    key: string;
     options: (Record<string, unknown> & { context?: LogContext }) | undefined;
   }>;
 
@@ -32,8 +32,8 @@ describe('AppErrorHandler', () => {
         {
           provide: NotificationService,
           useValue: {
-            error: (message: string, options?: Record<string, unknown> & { context?: LogContext }) => {
-              notificationCalls.push({ message, options });
+            errorKey: (key: string, options?: Record<string, unknown> & { context?: LogContext }) => {
+              notificationCalls.push({ key, options });
             },
           },
         },
@@ -62,7 +62,7 @@ describe('AppErrorHandler', () => {
       errorMessage: 'Unexpected failure',
     });
     expect(notificationCalls.length).toBe(1);
-    expect(notificationCalls[0].message).toBe('runtime.unexpected');
+    expect(notificationCalls[0].key).toBe('runtime.unexpected');
     expect(notificationCalls[0].options?.context).toMatchObject({
       feature: 'runtime',
       area: 'global-error-handler',
