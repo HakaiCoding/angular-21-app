@@ -1,6 +1,6 @@
 import type { IsActiveMatchOptions } from '@angular/router';
-import type { TranslationKey } from '../i18n/types';
-import { APP_ROUTE_LINKS } from './route-contract';
+import type { TranslationKey } from '../../../../i18n/types';
+import { APP_ROUTE_LINKS } from '../../../../routing/route-contract';
 
 type AppRouteLinkKey = keyof typeof APP_ROUTE_LINKS;
 type AppRouteLink = (typeof APP_ROUTE_LINKS)[AppRouteLinkKey];

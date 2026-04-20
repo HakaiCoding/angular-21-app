@@ -1,6 +1,4 @@
-import type { QueryParams } from '../../../../core/http/models/api-request';
-
-export interface PostListQueryDto extends QueryParams {
+export interface PostListQueryDto {
   userId?: number;
   _limit?: number;
 }

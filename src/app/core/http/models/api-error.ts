@@ -1,5 +1,3 @@
-export type ApiErrorKind = 'network' | 'timeout' | 'http' | 'unknown';
-
 export interface ApiNetworkError {
   kind: 'network';
   retryable: true;

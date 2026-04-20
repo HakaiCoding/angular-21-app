@@ -1,6 +1,8 @@
 import type { TranslationKey } from '../../i18n/types';
 
-export type NotificationLevel = 'success' | 'info' | 'warn' | 'error';
+export const NOTIFICATION_LEVELS = ['success', 'info', 'warn', 'error'] as const;
+
+export type NotificationLevel = (typeof NOTIFICATION_LEVELS)[number];
 
 export type NotificationParams = Readonly<Record<string, unknown>>;
 

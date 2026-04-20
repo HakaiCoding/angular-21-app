@@ -1,4 +1,6 @@
-export type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'off';
+export const LOG_LEVELS = ['debug', 'info', 'warn', 'error', 'off'] as const;
+
+export type LogLevel = (typeof LOG_LEVELS)[number];
 
 export interface LoggingConfig {
   level: LogLevel;

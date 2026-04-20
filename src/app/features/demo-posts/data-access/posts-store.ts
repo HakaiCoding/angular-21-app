@@ -6,7 +6,7 @@ import type { PostComment } from './models/post-comment.model';
 import type { PostListQuery } from './models/post-list-query.model';
 import { PostsApi } from './posts-api';
 
-export type RequestState<TData, TError = ApiError> =
+type RequestState<TData, TError = ApiError> =
   | { status: 'idle' }
   | { status: 'loading' }
   | { status: 'success'; data: TData }

@@ -1,14 +1,15 @@
 import { Injectable, inject, signal } from '@angular/core';
 import type { RuntimeConfig, RuntimeConfigOverride } from './models/runtime-config';
+import { LOG_LEVELS } from '../logging/models/logging-config';
+import {
+  NOTIFICATION_HORIZONTAL_POSITIONS,
+  NOTIFICATION_POLITENESS_VALUES,
+  NOTIFICATION_VERTICAL_POSITIONS,
+} from '../notifications/models/notification-config';
+import { NOTIFICATION_LEVELS } from '../notifications/models/notification';
 import { RUNTIME_CONFIG_DEFAULT, RUNTIME_CONFIG_URL } from './tokens/runtime-config';
 
 type NotificationOverride = NonNullable<RuntimeConfigOverride['notifications']>;
-
-const LOG_LEVELS = ['debug', 'info', 'warn', 'error', 'off'] as const;
-const NOTIFICATION_LEVELS = ['success', 'info', 'warn', 'error'] as const;
-const NOTIFICATION_HORIZONTAL_POSITIONS = ['start', 'center', 'end', 'left', 'right'] as const;
-const NOTIFICATION_VERTICAL_POSITIONS = ['top', 'bottom'] as const;
-const NOTIFICATION_POLITENESS_VALUES = ['off', 'polite', 'assertive'] as const;
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);

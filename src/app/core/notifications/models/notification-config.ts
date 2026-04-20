@@ -1,8 +1,13 @@
 import type { NotificationLevel } from './notification';
 
-export type NotificationHorizontalPosition = 'start' | 'center' | 'end' | 'left' | 'right';
-export type NotificationVerticalPosition = 'top' | 'bottom';
-export type NotificationPoliteness = 'off' | 'polite' | 'assertive';
+export const NOTIFICATION_HORIZONTAL_POSITIONS = ['start', 'center', 'end', 'left', 'right'] as const;
+export type NotificationHorizontalPosition = (typeof NOTIFICATION_HORIZONTAL_POSITIONS)[number];
+
+export const NOTIFICATION_VERTICAL_POSITIONS = ['top', 'bottom'] as const;
+export type NotificationVerticalPosition = (typeof NOTIFICATION_VERTICAL_POSITIONS)[number];
+
+export const NOTIFICATION_POLITENESS_VALUES = ['off', 'polite', 'assertive'] as const;
+export type NotificationPoliteness = (typeof NOTIFICATION_POLITENESS_VALUES)[number];
 
 export interface NotificationConfig {
   durationByLevel: Record<NotificationLevel, number>;
